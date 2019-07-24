@@ -93,9 +93,11 @@ source $HOME/.cargo/env
 rustup default nightly-2019-05-22
 
 ## install tendermint
-cd ~/bin   
-wget https://github.com/tendermint/tendermint/releases/download/v0.32.1/tendermint_v0.32.1_linux_amd64.zip  
-unzip ./tendermint_v0.32.1_linux_amd64.zip  
+choose latest version of tendermint
+```
+https://github.com/tendermint/tendermint/releases
+```
+and copy to  cd ~/bin   
 
 ## get source code
 git clone https://github.com/crypto-com/chain.git    
