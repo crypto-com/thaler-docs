@@ -24,24 +24,18 @@ docker build -t chain-tx .
 docker run -ti --rm -p 25933:25933 -v ~/chain-tx-enclave/:/root/sgx -it chain-tx /bin/bash  
 ```
 
-2. inside docker, install necessary components
-```
-apt update      
-apt install rsync curl git gcc unzip  libzmq3-dev  
-apt install libsnappy-dev wget vim pkg-config    
-```
-
-3. install sdk 
+2. install sdk 
 you can install intel-sgx-sdk, and compile the application.
 ```
 mkdir ~/bin
 cd sgx
 export SGX_MODE=SW  
 export NETWORK_ID=ab  
+mkdir ~/lib
 make
 ```
 
-4. build sgx application 
+3. build sgx application 
 ```
 cd ~/sgx/app  
 cargo build   
@@ -53,7 +47,7 @@ docker run -ti --device /dev/isgx -v ~/chain-tx-enclave/:/root/sgx -it chain-tx 
 root@docker:/# LD_LIBRARY_PATH=/opt/intel/libsgx-enclave-common/aesm /opt/intel/libsgx-enclave-common/aesm/aesm_service &
 
 ```
-5. copy enclave lib file to the system, and cargo build
+4. copy enclave lib file to the system, and cargo build
 if build fails, please copy libEnclave_u.a manually.
 ```
 cd ~/sgx
@@ -61,13 +55,16 @@ make
 cd ~/sgx/app
 cp libEnclave_u.a /usr/local/lib
 ```
-6. compile the release binary
+5. compile the release binary and copy ~/bin
 ```
 cargo build --release
 cp ./target/release/tx-validation-app  ~/bin
+cd ~/sgx
+make
+cp ~/sgx/bin/* ~/bin 
 ```
 
-7. congratulations   
+6. congratulations   
 chain-tx-enclave is now ready to go
 
 
@@ -108,6 +105,12 @@ cargo build --release
 cp ./target/release/chain-abci ~/bin
 
 
+## install packages in linux
+```
+apt update      
+apt install rsync curl git gcc unzip  libzmq3-dev  
+apt install libsnappy-dev wget vim pkg-config    
+```
 
 
 ## run the program
@@ -116,7 +119,9 @@ docker run -ti --rm  -p 25933:25933 -v ~/chain-tx-enclave:/root/sgx -it linux  /
 export SGX_MODE=SW  
 export NETWORK_ID=ab  
 export RUST_LOG=info  
-cd ~/sgx/bin  
+cd ~/sgx/bin    
+cp * ~/bin  
+cd ~/bin   
 ./tx-validation-app tcp://0.0.0.0:25933  
 
 ### abci
