@@ -2,15 +2,15 @@
 
 The documentation in this repository site is meant to provide specifications and implementation details that will be useful to third party developers or contributors to the main repository.
 
-# Getting Started
+## Getting Started
 
-## Prerequisites
+### Prerequisites
 
 You're going to need:
 - **NPM**
 - **Oracle JDK** (For generating the pdf, deployment needs this)
 
-## Getting Set Up
+### Getting Set Up
 
 1. Fork this repository on Github
 2. Clone your forked repository (not our original one) to your hard drive with `git clone https://github.com/YOURUSERNAME/chain-docs.git`
@@ -25,7 +25,7 @@ vuepress dev
 
 You can now see the docs at http://localhost:8080.
 
-# Adding new page to the doc
+## Adding new page to the doc
 
 1. Create a markdown file under `/docs/getting-started/`
 2. Open `/docs/.vuepress/config.js`
@@ -66,7 +66,7 @@ module.exports = {
 }
 ```
 
-# Deploying Chain-doc to Github Pages
+## Deploying Chain-doc to Github Pages
 
 1. Make sure you're working on a fork in your own account, not our original respository: `git remote show origin`
 2. Commit your changes: `git commit -a -m "YOUR MESSAGE"`
