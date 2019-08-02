@@ -6,7 +6,7 @@ module.exports = {
       {text:'Home', link: '/'},
       {text:'Getting Started',link:'/getting-started/'},
       {text:'Client RPC',link:'https://github.com/crypto-com/chain/tree/master/client-rpc'},
-      {text:'Download',link:'https://brianmco.github.io/demo-doc-2/Crypto.com_Chain.pdf'}
+      {text:'Download',link:'https://crypto-com.github.io/Crypto.com_Chain.pdf'}
     ],
     sidebar: {
       '/getting-started/': [
@@ -28,7 +28,7 @@ module.exports = {
     },
     displayAllHeaders: true
   },
-  base: '/chain-docs-1/',
+  base: '/',
   plugins: [
     ['vuepress-plugin-export',
     {
