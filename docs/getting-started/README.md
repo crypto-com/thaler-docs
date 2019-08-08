@@ -44,7 +44,6 @@ mkdir ~/bin
 cd sgx
 export SGX_MODE=SW  
 export NETWORK_ID=ab  
-mkdir ~/lib
 make
 ```
 
