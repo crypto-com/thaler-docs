@@ -1,7 +1,7 @@
 # Getting Started
 
 This is the beginner's tutorial to boot-strap Chain.  
-By this tutorial, you can compile and run cro-chain from the scratch.  
+By following this tutorial, you will be able to compile and run cro-chain from the scratch.  
 
 ## Pre-requisites
 
