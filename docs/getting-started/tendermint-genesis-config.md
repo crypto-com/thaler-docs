@@ -1,6 +1,6 @@
 # Update Tendermint Genesis Configuration
 
-Copy the generated genesis configuration prepared previously and append it to `~/.tendermint/config/genesis.json` such that the file looks similar to this:
+Copy the generated genesis configuration prepared previously and add it to `~/.tendermint/config/genesis.json` such that the file looks similar to this:
 ```diff
 {
   "genesis_time": "2019-05-21T09:47:56.206264Z",
