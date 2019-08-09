@@ -227,17 +227,47 @@ long_term_incentive(0xf75dc04a0a77c8178a6880c44c6d8a8ffb436093)=
 ```
 11. app_hash, app_state will be generated
 ```
-"app_hash": "DA9E22D89B9D44C5EB7D9E45113BD9FA8FE57A1B959FA72C8C701957AEB81B69",
-"app_state": {"distribution":{"0x12a16b806648fd6f75317f44f77ffb1ba68a3318":["1250000000000000000
-","ExternallyOwnedAccount"],"0x9b4597438fc9e72617232a7aed37567405cb80dd":["2500000000000000000",
-"ExternallyOwnedAccount"],"0xc55139f8d416511020293dd3b121ee8beb3bd469":["2500000000000000000","E
-xternallyOwnedAccount"],"0xf75dc04a0a77c8178a6880c44c6d8a8ffb436093":["3750000000000000000","Ext
-ernallyOwnedAccount"]},"launch_incentive_from":"0xc55139f8d416511020293dd3b121ee8beb3bd469","lau
-nch_incentive_to":"0x9b4597438fc9e72617232a7aed37567405cb80dd","long_term_incentive":"0xf75dc04a
-0a77c8178a6880c44c6d8a8ffb436093","network_params":{"initial_fee_policy":{"constant":1001,"coeff
-icient":1025},"required_council_node_stake":"1250000000000000000","unbonding_period":60},"counci
-l_nodes":[{"staking_account_address":"0x12a16b806648fd6f75317f44f77ffb1ba68a3318","consensus_pub
-key_type":"Ed25519","consensus_pubkey_b64":"ctjB+hMHPokJPmgVNqonwHgDd8M1xw0q4/abG40zXzk="}]}
+{  
+   "app_hash":"DA9E22D89B9D44C5EB7D9E45113BD9FA8FE57A1B959FA72C8C701957AEB81B69",
+   "app_state":{  
+      "distribution":{  
+         "0x12a16b806648fd6f75317f44f77ffb1ba68a3318":[  
+            "1250000000000000000",
+            "ExternallyOwnedAccount"
+         ],
+         "0x9b4597438fc9e72617232a7aed37567405cb80dd":[  
+            "2500000000000000000",
+            "ExternallyOwnedAccount"
+         ],
+         "0xc55139f8d416511020293dd3b121ee8beb3bd469":[  
+            "2500000000000000000",
+            "ExternallyOwnedAccount"
+         ],
+         "0xf75dc04a0a77c8178a6880c44c6d8a8ffb436093":[  
+            "3750000000000000000",
+            "ExternallyOwnedAccount"
+         ]
+      },
+      "launch_incentive_from":"0xc55139f8d416511020293dd3b121ee8beb3bd469",
+      "launch_incentive_to":"0x9b4597438fc9e72617232a7aed37567405cb80dd",
+      "long_term_incentive":"0xf75dc04a0a77c8178a6880c44c6d8a8ffb436093",
+      "network_params":{  
+         "initial_fee_policy":{  
+            "constant":1001,
+            "coefficient":1025
+         },
+         "required_council_node_stake":"1250000000000000000",
+         "unbonding_period":60
+      },
+      "council_nodes":[  
+         {  
+            "staking_account_address":"0x12a16b806648fd6f75317f44f77ffb1ba68a3318",
+            "consensus_pubkey_type":"Ed25519",
+            "consensus_pubkey_b64":"ctjB+hMHPokJPmgVNqonwHgDd8M1xw0q4/abG40zXzk="
+         }
+      ]
+   }
+}
 ```
 now tendermint genesis file is ready.
 ```
