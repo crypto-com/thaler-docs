@@ -58,7 +58,7 @@ Details and field definitions of `genesis.json` can be found  [here](https://ten
 
 #### Step 1c) Create a Genesis configuration
 
-<a id="generate-genesis" />
+
 
 We  will use  the development tool  [dev-utils](https://github.com/crypto-com/chain/dev-utils) to generate the completed`genesis.json`:
 - Create a  configuration file `dev-conf.json` in  ``~/chain/dev-utils/``
@@ -188,13 +188,13 @@ Copy the genesis configuration [prepared previously](#app-hash),  append it to `
 ```
 By adding the extra fields( `app_hash` and `app_state`), we obtained the complete `genesis.json` file.
 
-<a id="start-chain-transaction-enclaves" />
+
 
 ## Step 2.  Start Transaction Enclaves
 
 We also need the transaction enclave for validating transactions; it can run on the hardware platform or a virtual machine. Follow the instructions in [Crypto.com Chain Transaction Enclaves](https://github.com/crypto-com/chain-tx-enclave) to build and run the Chain Transaction Enclaves.
 
-<a id="start-chain-abci" />
+
 
 ##  Step 3. Start Chain ABCI
 
@@ -217,7 +217,6 @@ chain-abci \
 --enclave_server tcp://127.0.0.1:25933
 ```
 
-<a id="start-lite-node" />
 
 ##  Final Step: Start Tendermint Node
 
