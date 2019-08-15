@@ -26,7 +26,7 @@ To create a wallet, currently, we have [client-rpc](https://github.com/crypto-co
   ```
   You will be prompted to enter a passphrase.
   
-- Generate an stacking address for the wallet to receive genesis funds. You will be prompted to enter the wallet passphrase again to verify.  
+- Generate a staking address for the wallet to receive genesis funds. You will be prompted to enter the wallet passphrase again to verify.  
   ```bash
   $ ./target/debug/client-cli address new --name Default --type Staking
   Enter passphrase: 
