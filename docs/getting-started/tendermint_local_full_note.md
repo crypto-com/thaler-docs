@@ -1,5 +1,5 @@
 
-## Start a Local Full Node
+## Local Full Node Development
 
 We will need the following to run a local full node:
 -  **[Genesis](https://crypto-com.github.io/getting-started/genesis.html#tendermint-extra-information):** Defining the initial state of the blockchain;
