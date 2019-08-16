@@ -1,12 +1,11 @@
 
-## Local Full Node Development
+# Local Full Node Development
 
 We will need the following to run a local full node:
 -  **[Genesis](https://crypto-com.github.io/getting-started/genesis.html#tendermint-extra-information):** Defining the initial state of the blockchain;
 -  **[Tendermint Node](https://crypto-com.github.io/getting-started/consensus.html#client-interacting-with-the-blockchain):** Performing consensus operations;
 - **[Transaction Enclave](https://crypto-com.github.io/getting-started/enclave-architecture.html#transaction-validation):** Validating transactions;
 -  **[Application BlockChain Interface (_ABCI_)](https://tendermint.com/docs/spec/abci/)**: Connecting between Tendermint and applications.
-
 
 
 ## Step 1. Generate Genesis

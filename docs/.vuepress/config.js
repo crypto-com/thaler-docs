@@ -11,6 +11,7 @@ module.exports = {
     sidebar: {
       '/getting-started/': [
         '',
+        'local_full_node_development',
         'consensus',
         'genesis',
         'transaction-accounting-model',
