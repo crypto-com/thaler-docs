@@ -41,7 +41,7 @@ module.exports = {
       '/getting-started/': [
         '',
         ...,
-+        '[AddYourNewFileNameHere]'
++        '[Add_Your_New_File_Name_Here]'
         ...
       ]
     }
@@ -55,7 +55,7 @@ module.exports = {
         var ordering = {
           'Home': 0,
           ...,
- +         '[AddYourNewFileNameHere]': [AddTheNumberYouWantThePageBeOrdered]
++         '[AddYourNewFileNameHere]': [Add_The_Number_You_Want_The_Page_Be_Ordered]
           ...,
         };
         ...
