@@ -216,7 +216,7 @@ chain-abci \
 
 ## Final Step: Start Tendermint Node
 
-Once we have the **transaction enclave** and **chain-abci** running, we can start our tendermint node simply by :
+Once we have the **transaction enclave** and **chain-abci** running, we can start our tendermint node simply by : 
 
 ```bash
 tendermint node
