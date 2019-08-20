@@ -55,7 +55,7 @@ module.exports = {
         var ordering = {
           'Home': 0,
           ...,
-+         '[AddYourNewFileNameHere]': [Add_The_Number_You_Want_The_Page_Be_Ordered]
++         '[Add_Your_New_File_Name_Here]': [Add_The_Number_You_Want_The_Page_Be_Ordered]
           ...,
         };
         ...
