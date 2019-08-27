@@ -50,7 +50,7 @@ Transfer CRO to another address:
 
 ## Types of transaction and address
 
-There are various kinds of transactions between different types of addresses. For example, we can check the bonded and unbounded balances of a *Stacking* address by:
+There are various kinds of transactions between different types of addresses. For example, we can check the bonded and unbounded balances of a *Staking* address by:
 
 ```bash
 $./target/debug/client-cli state --name Default --address 0xbdb46d64ed9da69093490a578158b1a20d96370b
