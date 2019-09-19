@@ -39,7 +39,7 @@ $ CRYPTO_CLIENT_STORAGE=/my-wallet-storage ./bin/client-cli ...
 
 ## Chain ID
 
-Crypto.com Chain has different [Chain ID](https://crypto-com.github.io/getting-started/#chain-id) to distinguish between *devnet*, *testnet* and *mainnet*. Accordingly, you should set up your ClientCLI and use the correct configuration for the node you are connecting to.
+Crypto.com Chain has different [Chain ID](../getting-started/chain-id-and-network-id#chain-id) to distinguish between *devnet*, *testnet* and *mainnet*. Accordingly, you should set up your ClientCLI and use the correct configuration for the node you are connecting to.
 
 ### Configure Chain ID
 
