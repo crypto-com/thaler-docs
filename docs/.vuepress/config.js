@@ -17,6 +17,7 @@ module.exports = {
         'send_your_first_transaction',
         'consensus',
         'genesis',
+        'chain-id',
         'transaction-accounting-model',
         'transaction',
         'serialization',
