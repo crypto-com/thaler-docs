@@ -177,7 +177,7 @@ Similar to jailing, a validator is slashed if:
 
 1. They are not **live**, i.e., they failed to successfully sign `missed_block_threshold` blocks in last
    `block_signing_window` blocks.
-1. They make a byzantine fault, i.e., they sign conflicting transactions at same height and round.
+1. They make a byzantine fault, e.g., they sign messages at same height and round.
 
 Unlike jailing, which happens immediately after punishments are triggered, slashing happens after `slash_wait_period`.
 `slash_wait_period` is a network parameter and can be configured during genesis. Validators are not immediately slashed
