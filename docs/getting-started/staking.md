@@ -159,7 +159,7 @@ A validator is jailed if:
 
 1. They are not **live**, i.e., they failed to successfully sign `missed_block_threshold` blocks in last
    `block_signing_window` blocks.
-1. They make a byzantine fault, i.e., they sign conflicting transactions at same height and round.
+1. They make a byzantine fault, e.g., they sign messages at same height and round.
 
 When a validator gets jailed, they cannot perform any operations relating to their account, for example,
 `withdraw_stake`, `deposit_stake`, `unbond_stake`, etc., until they are un-jailed. Also, a validator cannot be un-jailed
