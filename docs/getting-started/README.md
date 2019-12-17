@@ -195,7 +195,7 @@ chain-abci
 ./dev-utils init
 ```
 
-4. Enter "cleakdisk" two times to remove which includes `.cro_storage` and `.storage`
+4. Enter "cleakdisk" two times to remove the block date which includes `.cro_storage` and `.storage`
 
 ```
 ** DANGER **
