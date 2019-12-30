@@ -2,7 +2,7 @@
 
 Crypto.com Chain prototype uses Tendermint Core as its consensus algorithm. It utilizes the [ABCI](https://docs.tendermint.com/master/spec/abci/) (Application BlockChain Interface), which allows applications written in different languages to interact with the blockchain. 
 
-This interface allows a "plugging" custom applications with Tendermint. Specifically, if the application is written in Go, it can be linked directly wtih the chain; otherwise, a connection can be established via 3 TCP or Unix sockets. The details of this interface can be found [here](https://docs.tendermint.com/master/spec/abci/abci.html#overview).
+This interface allows a "plugging" custom applications with Tendermint. Specifically, if the application is written in Go, it can be linked directly with the chain; otherwise, a connection can be established via 3 TCP or Unix sockets. The details of this interface can be found [here](https://docs.tendermint.com/master/spec/abci/abci.html#overview).
 
 As Crypto.com Chain Core code is written in Rust, we utilize (and aim to continually improve) the [rust-abci](https://github.com/tendermint/rust-abci/) library. 
 
