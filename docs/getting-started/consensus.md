@@ -2,16 +2,16 @@
 
 Crypto.com Chain prototype uses Tendermint Core as its consensus algorithm. It utilizes the [ABCI](https://docs.tendermint.com/master/spec/abci/) (Application BlockChain Interface), which allows applications written in different languages to interact with the blockchain. 
 
-This interface allows a "plugging" custom applications with Tendermint. Specifically, if the application is written in Go, it can be linked directly wtih the cahin; otherwise, a connection can be established via 3 TCP or Unix sockets. The details of this interface can be found [here](https://docs.tendermint.com/master/spec/abci/abci.html#overview).
+This interface allows a "plugging" custom applications with Tendermint. Specifically, if the application is written in Go, it can be linked directly wtih the chain; otherwise, a connection can be established via 3 TCP or Unix sockets. The details of this interface can be found [here](https://docs.tendermint.com/master/spec/abci/abci.html#overview).
 
 As Crypto.com Chain Core code is written in Rust, we utilize (and aim to continually improve) the [rust-abci](https://github.com/tendermint/rust-abci/) library. 
 
-For the overall architecture of Tendermint Core consensus engine with the ABCI, please refer to this [infographic](https://github.com/mobfoundry/hackatom/raw/master/tminfo.pdf) and this [guide](https://tendermint.readthedocs.io/projects/tools/en/v0.23.0/app-dev/app-architecture.html#application-architecture-guide).
+For the overall architecture of Tendermint Core consensus engine with the ABCI, please refer to this [infographic](https://github.com/mobfoundry/hackatom/raw/master/tminfo.pdf) and this [guide](https://docs.tendermint.com/master/app-dev/app-architecture.html).
 
 
 ## Client: Interacting with the blockchain
 
-To query a blockchain or submit a transaction, one can use the [Tendermint RPC](https://tendermint.readthedocs.io/en/v0.10.4/rpc.html) for that. Details of this RPC and its mechanism can be found in [here](https://docs.tendermint.com/master/rpc/).
+To query a blockchain or submit a transaction, one can use the [Tendermint RPC]( https://docs.tendermint.com/master/tendermint-core/rpc.html) for that. Details of this RPC and its mechanism can be found in [here](https://docs.tendermint.com/master/rpc/).
 
 Currently, it supports 3 methods:
 
@@ -49,7 +49,8 @@ In Crypto.com Chain, the application hash is a [Blake2s](https://blake2.net/) ha
 
 - Root of a Merkle tree of a valid transactions in a given block;
 - Root of a sparse Merkle trie of staked states (see [accounting details](./transaction-accounting-model));
-- Binary serialized state of rewards pool (see [serialization](./serialization) for details on Chain binary format and [genesis](./genesis) for details on “state”).
+- Binary serialized state of rewards pool (see [serialization](./serialization) for details on Chain binary format and [genesis](./genesis) for details on “state”);
+- Serialised [network parameters](./network-parameters.md).
 
 ## Conventions
 
