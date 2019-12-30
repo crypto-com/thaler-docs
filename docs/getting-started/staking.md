@@ -36,8 +36,13 @@ pub struct CouncilNode {
 ### Joining the network
 Anyone who wishes to become a council node can submit a NodeJoinTx; this transaction is considered to be valid as long as:
 
-1. The associated staking account has bonded amount >= `COUNCIL_NODE_MIN_STAKE` and is not punished
+1. The associated staking account has `bonded` amount >= `COUNCIL_NODE_MIN_STAKE` and is not [punished](#punishments);
 1. There is no other validator with the same `staking_address` or the `consensus_pubkey`
+
+####  Voting power and proposer selection
+At the beginning of each round, a council node will be chosen deterministically to be the block proposer.
+
+The chance of being a proposer is directly proportional to their *voting power* at that time, which, in general, is equal to the `bonded` amount in the associated staking address of the council node.
 
 The top `MAX_VALIDATORS` (ordered by the voting power) would put to the active validator set in `END_BLOCK`.
 
@@ -65,7 +70,7 @@ pub struct RewardsPool {
 
 ### Reward distribution
 
-Rewards are distributed periodicly (e.g. daily), rewards are accumulated during each period, and block proposers are recorded. At the end of each period, validators will receive a portion of the 'reward pool' as a reward for participating in the consensus process. Specifically, the reward is proportional to the number of blocks that were successfully proposed by the validator; it is calculated as follows:
+Rewards are distributed periodically (e.g. daily), rewards are accumulated during each period, and block proposers are recorded. At the end of each period, validators will receive a portion of the 'reward pool' as a reward for participating in the consensus process. Specifically, the reward is proportional to the number of blocks that were successfully proposed by the validator; it is calculated as follows:
 
 ```
 rewards of validator = total rewards * number of blocks proposed by the validator / total number of blocks
@@ -273,8 +278,8 @@ Besides committing all the relevant changes and computing the resulting `APP_HAS
 
  For example, if the changes are relevant to the `bonded` amount of the council node’s staking address and the validator is not jailed: 
 
-- If the `bonded` amount changes and < `COUNCIL_NODE_MIN_STAKE`, then the validator’s power should be set to 0;
-- If the `bonded` amount changes and >= `COUNCIL_NODE_MIN_STAKE`, then the validator’s power should be set to that amount.
+- If the `bonded` amount changes and < `COUNCIL_NODE_MIN_STAKE`, then the validator’s voting power should be set to 0;
+- If the `bonded` amount changes and >= `COUNCIL_NODE_MIN_STAKE`, then the validator’s voting power should be set to that amount.
 
 If the changes are relevant to the jailing condition of the council node’s staking address:
 
