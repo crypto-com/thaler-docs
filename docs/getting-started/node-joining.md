@@ -16,14 +16,14 @@ First of all, we can query the current staking related parameters of Crypto.com 
 curl -s 'http://localhost:26657/abci_info' | grep required_council_node_stake
 ```
 
-For example:
+:::tip Example
 
 ```json
 "required_council_node_stake\":\"625000000000000000\"
 ```
 
 implies that you would need at least `625000000000000000` basic unit of CRO to become a validator, which is equivalent to `6250000000` CRO.
-
+::: 
 The minimum staking amount is the first requirement for being a validator. Besides this, note that only the top `MAX_VALIDATORS` with the most `bonded` amount would be considered as an _active_ validator (see [here](./staking.md#joining-the-network) for details). This network parameter can be found by:
 
 ```bash
