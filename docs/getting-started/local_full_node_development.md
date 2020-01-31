@@ -17,7 +17,7 @@ Firstly, we will need a wallet to receive the genesis funds.
 
 ### Step 1a) Create a Wallet
 
-To create a wallet, currently, we have [client-rpc](https://github.com/crypto-com/chain/client-rpc) and [client-cli](https://github.com/crypto-com/chain/client-cli) available for this purpose. We will be using [client-cli](https://github.com/crypto-com/chain/client-cli) in this guide.
+To create a wallet, currently, we have [client-rpc](https://github.com/crypto-com/chain/tree/master/client-rpc) and [client-cli](https://github.com/crypto-com/chain/tree/master/client-cli) available for this purpose. We will be using [client-cli](https://github.com/crypto-com/chain/tree/master/client-cli) in this guide.
 
 - Create a new *basic* wallet with the name "Default" by running
 
