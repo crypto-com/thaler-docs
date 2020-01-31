@@ -61,7 +61,7 @@ Details and field definitions of `genesis.json` can be found  [here](https://doc
 
 #### Step 1c) Create a Genesis configuration
 
-We  will use  the development tool  [dev-utils](https://github.com/crypto-com/chain/dev-utils) to generate the completed`genesis.json`:
+We  will use  the development tool  [dev-utils](https://github.com/crypto-com/chain/tree/master/dev-utils) to generate the completed`genesis.json`:
 
 - Create a  configuration file `dev-conf.json` in  ``~/chain/dev-utils/``
 - Obtain the following information for generating the configuration of our Genesis file:
