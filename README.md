@@ -82,7 +82,6 @@ module.exports = {
   plugins: [
     ['vuepress-plugin-export',
     {
-      hideNav: true,  // hide nav bar or not when generating PDF
       page: {         // Puppeteer.page.pdf([options])
         format: 'A4',
         printBackground: true,
