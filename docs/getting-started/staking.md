@@ -334,7 +334,7 @@ If the validator wishes to re-join the validator set, they can (unjail if necess
 
 If the NodeJoinTx transaction is valid AND this happens before  `SLASH_MAP_DELETE` AND the consensus pubkey (or associated Tendermint address) from NodeJoinTx transaction is the same, the previous slashing information is preserved (i.e. the "delete schedule" is cancelled).
 
-If the NodeJoinTx transaction is valid AND this happens before next reward distribution AND the consensus pubkey from NodeJoinTx transaction is different, the associated staked state is then rewarded for interactions with both consensus pubkeys.
+If the NodeJoinTx transaction is valid AND this happens before next reward distribution AND the consensus pubkey from NodeJoinTx transaction is different, the associated staked state is then rewarded for interactions with both consensus pubkeys (as reward tracking is per staked state).
 
 ### Validators / Council Nodes
 
