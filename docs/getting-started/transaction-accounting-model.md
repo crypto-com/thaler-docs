@@ -54,8 +54,8 @@ For example, by using [clinent-cli](../wallets/client-cli.md#staking-operations)
 | Slash Amount    |               Not punished |
 +-----------------+----------------------------+
 ```
-- The `Nonce` is the number of transactions involved with the account;
- - The `Bonded` amount is the amount used to check against minimal staking requirements and used to calculate the Tendermint validator voting power (in case of council nodes).
+- The `Nonce` is the number of transactions involved with the account.
+- The `Bonded` amount is the amount used to check against minimal staking requirements and used to calculate the Tendermint validator voting power (in case of council nodes).
 
     As it may take time for the network evidence of malicious activity (e.g. double signing) to appear, the stake cannot be withdrawn immediately and is first moved to the “unbonded” balance.
 
