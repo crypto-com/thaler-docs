@@ -12,6 +12,10 @@ Config items will be referenced in pseudo code directly.
 - `slash_wait_period`
 - `reward_period`
 - `unbonding_period`
+- `block_signing_window`
+- `missed_block_threshold`
+- `liveness_slash_rate`
+- `byzantine_slash_rate`
 
 Config constraints:
 
@@ -47,6 +51,7 @@ create table validator (
   bonded int indexed,
   validator_address text indexed unique,
   council_node_info json,
+  liveness_tracker [bool; block_signing_window] null,  -- liveness tracker for active validator, null means inactive validator
   inactive_time timestamp null,  -- the block time when node becomes inactive, null means active validator candidate
   voting_power int = bonded / 10000_0000,  -- computed on the fly
 );
@@ -87,15 +92,20 @@ save all tables
 
 ### `end_block`
 
-#### Set `inactive_time` for newly inactive validators
+#### Update validator status
 
-Find the newly inactive validators, mark them by settings `inactive_time`, after this, `inactive_time is null` means active validator candidate.
+Update `inactive_time`, `liveness_tracker` according to validator status.
+
+- Mark the newly inactive validators by settings `inactive_time`, after this, `inactive_time is null` means active validator candidate.
+- Init or clear `liveness_tracker` respectively.
 
 ```sql
-update validator set inactive_time=:block_time
+update validator
+   set inactive_time = :block_time,
+       liveness_tracker = null,
   where inactive_time is null  -- active currently
     and ( bonded < minimal_required_staking  -- not enough bonded coins
-       or exists (select 1 from punishment where staking_address=validator.staking_address)  -- or punished
+       or exists (select 1 from punishment where staking_address=validator.staking_address)  -- is jailed
         );
 ```
 
@@ -157,9 +167,9 @@ delete from validator
 
 ### `deliver_tx`
 
-#### Handle `deposit` tx
+- Some validator states (`inactive_time`, `liveness_tracker`) are inconsistent during `deliver_tx`, they are only updated at once at `end_block`. So if there are `unbond` and `deposit` transactions on same staking address executed in the same block, the validator states (`liveness_tracker`) will not changed.
 
-- validator status will be updated at `end_block`
+#### Handle `deposit` tx
 
 ```sql
 if not exists (select 1 from punishment where staking_address = :staking_address):
@@ -174,8 +184,6 @@ if value is not null:
 ```
 
 #### Handle `unbond` tx
-
-- validator status will be updated at `end_block`
 
 ```sql
 update staked_state
@@ -203,22 +211,24 @@ update staked_state
 - If `staking_address` exists, and conditions for active validator are met, clear `inactive_time` and update `validator_address` and `council_node_info` with new informations.
 
 ```sql
-select bonded from staked_state where staking_address = :staking_address;
+select bonded into bonded from staked_state where staking_address = :staking_address;
 
-insert into validator values (
-  :staking_address,
-  (select bonded from staked_state where staking_address = :staking_address),
-  :validator_address,
-  :council_node_info
-) on conflict (staking_address) do
-  -- do re-join
-  update
-     set inactive_time = null,
-         bonded = EXCLUDED.bonded,  -- Should be the same already.
-         validator_address = EXCLUDED.validator_address
-         council_node_info = EXCLUDED.council_node_info
-   where EXCLUDED.bonded >= minimal_required_staking
-     and not exists (select 1 from punishment where staking_address = validator.staking_address);
+if bonded >= minimal_required_staking {
+  insert into validator values (
+    :staking_address,
+    bonded,
+    :validator_address,
+    :council_node_info,
+    [true; block_signing_window],  -- init liveness_tracker
+  ) on conflict (staking_address) do
+    -- do re-join, validator status will be updated at `end_block`
+    update
+       set inactive_time = null,
+           liveness_tracker = EXCLUDED.liveness_tracker,
+           validator_address = EXCLUDED.validator_address,
+           council_node_info = EXCLUDED.council_node_info
+     where not exists (select 1 from punishment where staking_address = validator.staking_address);  -- not jailed
+}
 ```
 
 #### Unjail
@@ -234,29 +244,81 @@ delete from punishment
 
 ### `begin_block`
 
-#### Jail (byzantine or non-liveness)
+#### Update `liveness_tracker`
 
-- process detected liveness/byzantine fault
-- calculate `punishments: Vec<(staking_address, slash_rate, slash_reason)>`, including new punishments and to be updated punishment
+- Get `last_commit_info` from `RequestBeginBlock`.
 
 ```sql
-for (staking_address, slash_rate, slash_reason) in punishments.iter() {
-    -- upsert, keep the severer one when update.
-    insert into punishment values (
-      :staking_address,
-      :slash_rate,
-      :block_time,
-      :slash_reason
-    ) on conflict(staking_address) do
-        update slash_rate = EXCLUDED.slash_rate
-               slash_reason = EXCLUDED.slash_reason
-          where EXCLUDED.slash_rate > punishment.slash_rate
-            and punishment.slash_amount is null;  -- null means not slashed yet.
-}
-
--- clear reward_stat of punished validators
-delete from reward_stat where staking_address in [punished staking addresses];
+update validator
+   set update_liveness_tracker(
+     liveness_tracker,
+     :block_height,
+     last_commit_info.votes
+       .get(validator_address)
+       .map(|v| v.signed_last_block)
+       .unwrap_or(true),  -- default to true for validator candidates not selected.
+   )
+ where liveness_tracker is not null;
 ```
+
+```rust
+fn update_liveness_tracker(liveness_tracker, block_height, signed) {
+    liveness_tracker[block_height % block_signing_window] = signed;
+}
+```
+
+#### Jail (byzantine or non-liveness)
+
+- Get `byzantine_validators` from `RequestBeginBlock`.
+
+- Collect `punishments :: Vec<(StakingAddress, SlashRate, String)>`.
+
+  ```sql
+  nonlive_faults =
+    select staking_address, liveness_slash_rate, "non-live"
+      from validator
+     where liveness_tracker is not null
+       and count_false(liveness_tracker) > missed_block_threshold;
+
+  byzantine_faults = byzantine_validators.iter().map(|evidence| {
+    (
+      select staking_address from validator where validator_address = evidence.validator_address,
+      byzantine_slash_rate,
+      "byzantine"
+    )
+  }).collect::<Vec<_>>();
+
+  punishments = [nonlive_faults, byzantine_faults].concat();
+  ```
+
+- Calculate `slash_proportion`.
+
+  ```rust
+  slash_proportion = 1.0  // TODO
+  ```
+
+- Apply `punishments`:
+
+  ```sql
+  for (staking_address, slash_rate, slash_reason) in punishments {
+      slash_rate *= slash_proportion
+
+      -- upsert, keep the severer one when update.
+      insert into punishment values (
+        :staking_address,
+        :slash_rate,
+        :block_time,
+        :slash_reason
+      ) on conflict(staking_address) do
+          update slash_rate = EXCLUDED.slash_rate
+                 slash_reason = EXCLUDED.slash_reason
+            where EXCLUDED.slash_rate > punishment.slash_rate
+              and punishment.slash_amount is null;  -- null means not slashed yet.
+
+      -- clear reward_stat of punished validators
+      delete from reward_stat where staking_address = staking_address;
+  }
+  ```
 
 #### Slash
 
@@ -268,14 +330,18 @@ update punishment
  where :block_time >= jail_time + slash_wait_period
    and slash_amount is null  -- not executed yet
 
-fn execute_slash(staking_address, slash_rate) {
-  update staked_state
-     set bonded -= bonded * slash_rate,
-         unbonded -= unbonded * slash_rate
-    where staking_address=:staking_address
-    returning bonded_slashed, unbonded_slashed;
+fn execute_slash(staking_address, slash_rate) -> Coin {
+  select bonded * slash_rate into bonded_slashed,
+         unbonded * slash_rate into unbonded_slashed
+    from staked_state
+   where staking_address = :staking_address;
 
-  return bonded_slashed + unbonded_slashed;
+  update staked_state
+     set bonded -= bonded_slashed,
+         unbonded -= unbonded_slashed
+    where staking_address = :staking_address;
+
+  bonded_slashed + unbonded_slashed
 }
 ```
 
