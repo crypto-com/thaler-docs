@@ -51,9 +51,13 @@ create table validator (
   bonded int indexed,
   validator_address text indexed unique,
   council_node_info json,
-  liveness_tracker [bool; block_signing_window] null,  -- liveness tracker for active validator, null means inactive validator
-  inactive_time timestamp null,  -- the block time when node becomes inactive, null means active validator candidate
-  voting_power int = bonded / 10000_0000,  -- computed on the fly
+  -- liveness tracker for active validator, null means inactive validator, array of bool can be optimized with bitvec.
+  liveness_tracker [bool; block_signing_window] null,
+  -- the block time when node becomes inactive, null means active validator candidate
+  inactive_time timestamp null,
+
+  -- computed on the fly
+  voting_power int = bonded / 10000_0000,
 );
 
 -- Currently chosen validator set and voting powers snapshoted at the end of last block
@@ -267,7 +271,7 @@ fn update_liveness_tracker(liveness_tracker, block_height, signed) {
 }
 ```
 
-#### Jail (byzantine or non-liveness)
+#### Jail
 
 - Get `byzantine_validators` from `RequestBeginBlock`.
 
@@ -294,10 +298,14 @@ fn update_liveness_tracker(liveness_tracker, block_height, signed) {
 - Calculate `slash_proportion`.
 
   ```rust
-  slash_proportion = 1.0  // TODO
+  select sum(voting_power) into total_voting_power from validator_snapshot;
+  select sum(sqrt(voting_power / total_voting_power)) ^ 2
+    into slash_proportion
+    from validator
+   where staking_address in punishments;
   ```
 
-- Apply `punishments`:
+- Apply `punishments`.
 
   ```sql
   for (staking_address, slash_rate, slash_reason) in punishments {
