@@ -27,7 +27,7 @@ Config constraints:
 
   To make sure all the evidences of validator are processed before slash.
 
-- `unbonding_period >= max_evidence_age + slash_wait_period`
+- `unbonding_period >= max_evidence_age`
 
   To make sure unbonded coins not withdrawn before  evidences detected and slashed.
 
@@ -101,7 +101,7 @@ save all tables
 Update `inactive_time`, `liveness_tracker` according to validator status.
 
 - Mark the newly inactive validators by settings `inactive_time`, after this, `inactive_time is null` means active validator candidate.
-- Init or clear `liveness_tracker` respectively.
+- Clear `liveness_tracker` for newly inactive validators.
 
 ```sql
 update validator
@@ -206,6 +206,7 @@ update staked_state
    set unbonded = 0
  where staking_address = :staking_address
    and :block_time >= unbond_time + unbonding_period
+   and not exists (select 1 from punishment where staking_address = staked_state.staking_address)  -- not jailed
 ```
 
 #### Join node
