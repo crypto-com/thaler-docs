@@ -62,7 +62,7 @@ create table validator (
 
 -- Currently chosen validator set and voting powers snapshoted at the end of last block
 create table validator_snapshot (
-  staking_address text primary key,
+  validator_address text primary key,
   voting_power int,
 );
 
