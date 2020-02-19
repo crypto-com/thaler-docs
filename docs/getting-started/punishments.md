@@ -65,8 +65,8 @@ before `account.jailed_until` which is set to `block_time + UNBONDING_PERIOD` wh
 network parameter which can be configured during genesis.
 
 :::tip Important:
-`block_time` used in calculating `account.jailed_until` should be the time of the block at which the validator made the
-fault, which can be obtained from `evidence` provided by tendermint (current block for liveness faults).
+`block_time` used in calculating `account.jailed_until` should be the time of the block at which the fault is detected
+(i.e., `current_block_height`).
 :::
 
 #### Un-jailing and Re-joining 
@@ -101,8 +101,9 @@ account can be un-jailed after `UNBONDING_PERIOD`, it should not be allowed to u
 :::
 
 :::tip Important:
-A validator should not be slashed more than once within `UNBONDING_PERIOD`. If we get multiple slash requests for a
-validator within `UNBONDING_PERIOD`, we should ignore all requests other than the first one.
+A validator should not be slashed more than once within `UNBONDING_PERIOD`. I a validator commits multiple faults before
+`account.jailed_until`, it should only be slashed with the highest slash amount in that period (can be calculated using
+below algorithm).
 :::
 
 #### Slashing Rate
@@ -150,4 +151,10 @@ a 20% slash.
 slashing_rate = max(liveness_slash_percent, byzantine_slash_percent) * (sqrt(validator_voting_percent_1) + sqrt(validator_voting_percent_2))^2
               = max(1, 1) * (sqrt(0.05) + sqrt(0.05))^2                // assuming liveness_slash_percent and byzantine_slash_percent are both 100%
               = 0.2
+```
+
+Finally, `slashing_amount` can be calculated by multiplying `slashing_rate` by total `bondend + unbonded` amount.
+
+```
+slash_amount = slashing_rate * (bonded_amount + unbonded_amount)
 ```
