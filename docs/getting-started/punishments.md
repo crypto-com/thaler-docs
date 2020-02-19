@@ -41,8 +41,8 @@ be marked as **non-live** if they fail to successfully sign at least `50` blocks
 
 - Byzantine Faults (Double signing)
 
-    A validator is said to make a byzantine fault when they sign conflicting transactions at the same height and round.
-    Tendermint has mechanisms to publish evidence of validators that signed conflicting votes (it passes this 
+    A validator is said to make a byzantine fault when they sign conflicting messages/blocks at the same height and
+    round. Tendermint has mechanisms to publish evidence of validators that signed conflicting votes (it passes this 
     information to ABCI application in `BeginBlock` request), so they can be punished by the application.
 
 :::tip Implementation note:
