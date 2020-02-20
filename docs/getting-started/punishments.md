@@ -101,7 +101,7 @@ account can be un-jailed after `UNBONDING_PERIOD`, it should not be allowed to u
 :::
 
 :::tip Important:
-A validator should not be slashed more than once within `UNBONDING_PERIOD`. If a validator commits multiple faults
+A validator should not be slashed more than once within `UNBONDING_PERIOD` after they were jailed. If a validator commits multiple faults
 before `account.jailed_until`, it should only be slashed with the highest slash amount in that period (can be calculated
 using below algorithm).
 :::
