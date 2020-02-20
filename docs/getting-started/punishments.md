@@ -53,7 +53,7 @@ not older than `MAX_EVIDENCE_AGE` in tendermint.
 
 ### Jailing
 
-A validator is jailed if:
+A validator is jailed if any one of the following applies:
 
 1. They are not **live**, i.e., they failed to sign `MISSED_BLOCK_THRESHOLD` blocks in last
    `BLOCK_SIGNING_WINDOW` blocks successfully. 
