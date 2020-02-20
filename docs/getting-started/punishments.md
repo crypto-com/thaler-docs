@@ -16,8 +16,8 @@ parameters and their effect on behavior of validator punishments is discussed la
 1. `BLOCK_SIGNING_WINDOW`: Number of blocks for which the moving average is calculated for uptime tracking.
 1. `MISSED_BLOCK_THRESHOLD`: Maximum number of blocks with faulty/missed validations allowed for an account in last
    `BLOCK_SIGNING_WINDOW` blocks before it gets jailed.
-1. `LIVENESS_SLASH_PERCENT`: Percentage of funds (bonded + unbonded) slashed when validator is not live.
-1. `BYZANTINE_SLASH_PERCENT`: Percentage of funds (bonded + unbonded) slashed when validator makes a byzantine fault.
+1. `SLASH_RATE_MULTIPLIER`: Multiplier of funds (bonded + unbonded) slashed when validator makes a fault (liveness fault
+   or byzantine fault).
 
 :::tip Important:
 During slashing, funds are slashed from both, bonded and unbonded, amounts.
@@ -111,30 +111,18 @@ using below algorithm).
 Whenever a validator is slashed, a percentage of their `bonded` and `unbonded` amount is transferred to `rewards_pool`.
 There are many factors involved in determining the slashing rate for a validator:
 
-1. `LIVENESS_SLASH_PERCENT` and `BYZANTINE_SLASH_PERCENT` are the two network parameters used while calculating the
-   slashing rate. Both of these can be configured in the genesis.
+1. `SLASH_RATE_MULTIPLIER` is the network parameters used while calculating the slashing rate. It can be configured in
+   the genesis.
 1. `validator_voting_percent` is the voting percent of faulty validator in block `H` (`H` is the height of the block
    when the validator made the fault).
 1. List of all the faulty validators in the block `H` and their `validator_voting_percent`s (according to above
    definition).
 
-The algorithm for calculating `slashing_rate` is as follows:
-
-```
-validator_slash_percent = max(slash percent of individual faults)
-```
-
-For example, if a validator made a byzantine fault as well as they are non-live, then,
-
-```
-validator_slash_percent = max(liveness_slash_percent, byzantine_slash_percent)
-```
-
-And if there are `n` faulty validators in this period, then,
+The algorithm for calculating `slashing_rate` when there are `n` validators who committed faults in a block:
 
 ```
 slashing_rate = 
-    validator_slash_percent * 
+    SLASH_RATE_MULTIPLIER * 
     (
         sqrt(validator_voting_percent_1) +
         sqrt(validator_voting_percent_2) +
@@ -143,18 +131,18 @@ slashing_rate =
     )^2
 ```
 
-So, if one validator of 10% voting power faults, it gets a 10% slash (assuming `liveness_slash_percent` and
-`byzantine_slash_percent` are both 100%). While, if two validators of 5% voting power each fault together, they both get
-a 20% slash.
+So, if one validator of 10% voting power faults, it gets a 10% slash (assuming `SLASH_RATE_MULTIPLIER` is `1`). While,
+if two validators of 5% voting power each fault together, they both get a 20% slash.
 
 ```
-slashing_rate = max(liveness_slash_percent, byzantine_slash_percent) * (sqrt(validator_voting_percent_1) + sqrt(validator_voting_percent_2))^2
-              = max(1, 1) * (sqrt(0.05) + sqrt(0.05))^2                // assuming liveness_slash_percent and byzantine_slash_percent are both 100%
+slashing_rate = SLASH_RATE_MULTIPLIER * (sqrt(validator_voting_percent_1) + sqrt(validator_voting_percent_2))^2
+              = 1 * (sqrt(0.05) + sqrt(0.05))^2
               = 0.2
 ```
 
 Finally, `slashing_amount` can be calculated by multiplying `slashing_rate` by total `bondend + unbonded` amount.
 
 ```
-slash_amount = slashing_rate * (bonded_amount + unbonded_amount)
+slash_amount_bonded = slashing_rate * bonded_amount
+slash_amount_unbonded = slashing_rate * unbonded_amount
 ```
