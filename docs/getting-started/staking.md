@@ -103,7 +103,7 @@ Specifically, this reward rate `R` can be expressed by the following function:
 ```
 R = (R0 / 1000) * exp(-S / tau)
 ```
-To virtualize this, if we set `tau=10 Billion`, `R0=350`, we have the following graph of the function: 
+To visualize this, if we set `tau=10 Billion`, `R0=350`, we have the following graph of the function: 
 
 ![](./assets/reward_rate.png)
 
