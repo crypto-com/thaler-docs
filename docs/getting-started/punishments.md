@@ -84,7 +84,7 @@ slashed), they can create `UnjailTx` which marks them as un-jailed. After succes
 Validators are responsible for signing or proposing block at each consensus round. It is important that they maintain
 excellent availability and network connectivity to perform these tasks. A penalty performed by the slashing module
 should be imposed on validators' misbehavior or unavailability to reinforce this. Similar to jailing, a validator is
-slashed if:
+slashed if any one of the following applies:
 
 1. They are not **live**, i.e., they failed to sign `MISSED_BLOCK_THRESHOLD` blocks in last `BLOCK_SIGNING_WINDOW`
    blocks successfully.
