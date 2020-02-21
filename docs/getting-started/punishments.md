@@ -69,6 +69,11 @@ network parameter which can be configured during genesis.
 (i.e., `current_block_height`).
 :::
 
+:::tip Important:
+When a validator is jailed because of a byzantine fault, their validator public key is added to a list of permanently
+banned validators and cannot re-join the network as a validator with same public key.
+:::
+
 #### Un-jailing and Re-joining 
 
 When a jailed validator wishes to resume normal operations (after `account.jailed_until` has passed and the account is
