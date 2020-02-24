@@ -160,7 +160,7 @@ At the end of each reward epoch, the number of tokens being released at each per
 ```
     R0 = rewards_config["monetary_expansion_r0"]
     tau = rewards_config["monetary_expansion_tau"]
-    P = rewards_config["distribution_period:"]
+    P = rewards_config["distribution_period"]
 
     S = total_staking  # example: 1500000000_00000000
     Y = 365 * 24 * 60 * 60  # seconds of a year
