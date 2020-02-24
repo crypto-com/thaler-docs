@@ -113,7 +113,7 @@ Note that the above reward rate is per annum, and the number of tokens being rel
 N = S  *  ( (1 + R) ^ (1 / f) - 1 )
 ``` 
 
-where `S` is the total amount of tokens staked by validators to participate in the consensus process; `R0` is the upper bound for the reward rate; `tau` is a time-dependent variable that controls the exceptional rate; `f` is the frequency of reward being distributed per year.
+where `S` is the total amount of tokens staked by validators to participate in the consensus process; `R0` is the upper bound for the reward rate; `tau` is a time-dependent variable that controls the exponential rate; `f` is the frequency of reward being distributed per year.
 
 :::tip Example: If the reward rate is 28% with total staking of 500 million and the reward is being distributed every day, the number of tokens being released to the reward pool at the end of the day will be
 `500,000,000 *  ( (1+0.28)^(1/365) - 1) = 338,278`
@@ -162,16 +162,20 @@ At the end of each reward epoch, the number of tokens being released at each per
     tau = rewards_config["monetary_expansion_tau"]
     P = rewards_config["distribution_period"]
 
-    S = total_staking  # example: 1500000000_00000000
-    Y = 365 * 24 * 60 * 60  # seconds of a year
+    # total bonded amount of the active validators 
+    at the end of the reward epoch
+    S = total_staking  
+
+    # seconds of a year
+    Y = 365 * 24 * 60 * 60  
 
     R = (R0 / 1000) * exp(-S / tau)
     N = floor(S * (pow(1 + R, P / Y) - 1))
     N = N - N % 10000
 
     N: released coins
-    S: total stakings at current block when reward distribution 
-       happens
+    S: total stakings at current block when 
+       reward distribution happens
     R0: upper bound for the reward rate p.a.
 ```
 
