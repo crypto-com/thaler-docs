@@ -16,8 +16,9 @@ parameters and their effect on behavior of validator punishments is discussed la
 1. `BLOCK_SIGNING_WINDOW`: Number of blocks for which the moving average is calculated for uptime tracking.
 1. `MISSED_BLOCK_THRESHOLD`: Maximum number of blocks with faulty/missed validations allowed for an account in last
    `BLOCK_SIGNING_WINDOW` blocks before it gets jailed.
-1. `SLASH_RATE_MULTIPLIER`: Multiplier of funds (bonded + unbonded) slashed when validator makes a fault (liveness fault
-   or byzantine fault).
+1. `LIVENESS_SLASH_PERCENT`: Percentage of funds slashed when a validator is non-live.
+1. `BYZANTINE_SLASH_RATE_MULTIPLIER`: Multiplier of funds (bonded + unbonded) slashed when validator makes a fault
+   (liveness fault or byzantine fault).
 
 :::tip Important:
 During slashing, funds are slashed from both, bonded and unbonded, amounts.
@@ -51,13 +52,15 @@ byzantine fault, that evidence should be verified. Also, it should be checked th
 not older than `MAX_EVIDENCE_AGE` in tendermint.
 :::
 
+### Inactivity Punishment
+
+When a validator fails to successfully sign `MISSED_BLOCK_THRESHOLD` blocks in last `BLOCK_SIGNING_WINDOW` blocks, it is
+immediately punished by deducting funds from their bonded and unbonded amount. The funds to be deducted are calculated
+based on `LIVENESS_SLASH_PERCENT`.
+
 ### Jailing
 
-A validator is jailed if any one of the following applies:
-
-1. They are not **live**, i.e., they failed to sign `MISSED_BLOCK_THRESHOLD` blocks in last
-   `BLOCK_SIGNING_WINDOW` blocks successfully. 
-1. They make a byzantine fault, e.g., they sign messages at same height and round.
+A validator is jailed when they make a byzantine fault, e.g., they sign messages at same height and round.
 
 When a validator gets jailed, they cannot perform any operations relating to their account, for example,
 `withdraw_stake`, `deposit_stake`, `unbond_stake`, etc., until they are un-jailed. Also, a validator cannot be un-jailed
@@ -88,12 +91,8 @@ slashed), they can create `UnjailTx` which marks them as un-jailed. After succes
 
 Validators are responsible for signing or proposing block at each consensus round. It is important that they maintain
 excellent availability and network connectivity to perform these tasks. A penalty performed by the slashing module
-should be imposed on validators' misbehavior or unavailability to reinforce this. Similar to jailing, a validator is
-slashed if any one of the following applies:
-
-1. They are not **live**, i.e., they failed to sign `MISSED_BLOCK_THRESHOLD` blocks in last `BLOCK_SIGNING_WINDOW`
-   blocks successfully.
-1. They make a byzantine fault, e.g., they sign messages at same height and round.
+should be imposed on validators' misbehavior reinforce this. Similar to jailing, a validator is slashed if they make a
+byzantine fault.
 
 Unlike jailing, which happens immediately after punishments are triggered, slashing happens after `UNBONDING_PERIOD`.
 `UNBONDING_PERIOD` is a network parameter and can be configured during genesis. Validators are not immediately slashed
@@ -116,8 +115,8 @@ period (can be calculated using below algorithm).
 Whenever a validator is slashed, a percentage of their `bonded` and `unbonded` amount is transferred to `rewards_pool`.
 There are many factors involved in determining the slashing rate for a validator:
 
-1. `SLASH_RATE_MULTIPLIER` is the network parameters used while calculating the slashing rate. It can be configured in
-   the genesis.
+1. `BYZANTINE_SLASH_RATE_MULTIPLIER` is the network parameters used while calculating the slashing rate. It can be
+   configured in the genesis.
 1. `validator_voting_percent` is the voting percent of faulty validator in block `H` (`H` is the height of the block
    when the validator made the fault).
 1. List of all the faulty validators in the block `H` and their `validator_voting_percent`s (according to above
@@ -127,7 +126,7 @@ The algorithm for calculating `slashing_rate` when there are `n` validators who 
 
 ```
 slashing_rate = 
-    SLASH_RATE_MULTIPLIER * 
+    BYZANTINE_SLASH_RATE_MULTIPLIER * 
     (
         sqrt(validator_voting_percent_1) +
         sqrt(validator_voting_percent_2) +
@@ -136,11 +135,11 @@ slashing_rate =
     )^2
 ```
 
-So, if one validator of 10% voting power faults, it gets a 10% slash (assuming `SLASH_RATE_MULTIPLIER` is `1`). While,
-if two validators of 5% voting power each fault together, they both get a 20% slash.
+So, if one validator of 10% voting power faults, it gets a 10% slash (assuming `BYZANTINE_SLASH_RATE_MULTIPLIER` is `1`).
+While, if two validators of 5% voting power each fault together, they both get a 20% slash.
 
 ```
-slashing_rate = SLASH_RATE_MULTIPLIER * (sqrt(validator_voting_percent_1) + sqrt(validator_voting_percent_2))^2
+slashing_rate = BYZANTINE_SLASH_RATE_MULTIPLIER * (sqrt(validator_voting_percent_1) + sqrt(validator_voting_percent_2))^2
               = 1 * (sqrt(0.05) + sqrt(0.05))^2
               = 0.2
 ```
