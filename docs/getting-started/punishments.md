@@ -55,8 +55,13 @@ not older than `MAX_EVIDENCE_AGE` in tendermint.
 ### Inactivity Punishment
 
 When a validator fails to successfully sign `MISSED_BLOCK_THRESHOLD` blocks in last `BLOCK_SIGNING_WINDOW` blocks, it is
-immediately punished by deducting funds from their bonded and unbonded amount. The funds to be deducted are calculated
+immediately punished by deducting funds from their bonded and unbonded amount and removing them from active validator
+set if the resulting bonded amount is still greater than minimum required stake. The funds to be deducted are calculated
 based on `LIVENESS_SLASH_PERCENT`.
+
+:::tip Note:
+The validator is not **jailed** in this scenario. They can immediately send a `NodeJoinTx` to join back as a validator.
+:::
 
 ### Jailing
 
