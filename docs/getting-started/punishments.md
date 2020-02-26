@@ -16,9 +16,8 @@ parameters and their effect on behavior of validator punishments is discussed la
 1. `BLOCK_SIGNING_WINDOW`: Number of blocks for which the moving average is calculated for uptime tracking.
 1. `MISSED_BLOCK_THRESHOLD`: Maximum number of blocks with faulty/missed validations allowed for an account in last
    `BLOCK_SIGNING_WINDOW` blocks before it gets jailed.
-1. `LIVENESS_SLASH_PERCENT`: Percentage of funds slashed when a validator is non-live.
-1. `BYZANTINE_SLASH_RATE_MULTIPLIER`: Multiplier of funds (bonded + unbonded) slashed when validator makes a fault
-   (liveness fault or byzantine fault).
+1. `LIVENESS_SLASH_PERCENT`: Percentage of funds (bonded + unbonded) slashed when a validator is non-live.
+1. `BYZANTINE_SLASH_PERCENT`: Percentage of funds (bonded + unbonded) slashed when validator makes a byzantine fault.
 
 :::tip Important:
 During slashing, funds are slashed from both, bonded and unbonded, amounts.
@@ -84,74 +83,20 @@ banned validators and cannot re-join the network as a validator with same public
 
 #### Un-jailing and Re-joining 
 
-When a jailed validator wishes to resume normal operations (after `account.jailed_until` has passed and the account is
-slashed), they can create `UnjailTx` which marks them as un-jailed. After successful un-jailing, validators can submit a
-`NodeJoinTx`, which will add them back to validator set.
-
-:::tip Important:
-`UnjailTx` should only be valid after funds are slashed from jailed account.
-:::
+When a jailed validator wishes to resume normal operations (after `account.jailed_until` has passed), they can create
+`UnjailTx` which marks them as un-jailed. After successful un-jailing, validators can submit a `NodeJoinTx`, which will
+add them back to validator set.
 
 ### Slashing
 
 Validators are responsible for signing or proposing block at each consensus round. It is important that they maintain
 excellent availability and network connectivity to perform these tasks. A penalty performed by the slashing module
 should be imposed on validators' misbehavior reinforce this. Similar to jailing, a validator is slashed if they make a
-byzantine fault.
-
-Unlike jailing, which happens immediately after punishments are triggered, slashing happens after `UNBONDING_PERIOD`.
-`UNBONDING_PERIOD` is a network parameter and can be configured during genesis. Validators are not immediately slashed
-because evidence for more faulty may be discovered after some time. If a validator makes multiple faults in
-`UNBONDING_PERIOD`, they'll only be slashed once for the worst fault in that period.
-
-:::tip Implementation note:
-It should be enforced in implementation that un-jailing can only be done after an account is slashed. So, even if an
-account can be un-jailed after `UNBONDING_PERIOD`, it should not be allowed to un-jail until it has been slashed.
-:::
+byzantine fault. If a validator makes multiple faults in `UNBONDING_PERIOD`, they'll only be slashed once for the worst
+fault in that period. The funds to be deducted are calculated based on `BYZANTINE_SLASH_PERCENT`.
 
 :::tip Important:
-A validator should not be slashed more than once within `UNBONDING_PERIOD` after they were jailed. If a validator
-commits multiple faults before `account.jailed_until`, it should only be slashed with the highest slash amount in that
-period (can be calculated using below algorithm).
+A validator should not be slashed more than once within `UNBONDING_PERIOD`. If a validator commits multiple faults
+within that time period, it should only be slashed once (for simplicity, we'll only slash the validator for the first
+evidence that we get from tendermint and ignore other evidences until `UNBONDING_PERIOD`).
 :::
-
-#### Slashing Rate
-
-Whenever a validator is slashed, a percentage of their `bonded` and `unbonded` amount is transferred to `rewards_pool`.
-There are many factors involved in determining the slashing rate for a validator:
-
-1. `BYZANTINE_SLASH_RATE_MULTIPLIER` is the network parameters used while calculating the slashing rate. It can be
-   configured in the genesis.
-1. `validator_voting_percent` is the voting percent of faulty validator in block `H` (`H` is the height of the block
-   when the validator made the fault).
-1. List of all the faulty validators in the block `H` and their `validator_voting_percent`s (according to above
-   definition).
-
-The algorithm for calculating `slashing_rate` when there are `n` validators who committed faults in a block:
-
-```
-slashing_rate = 
-    BYZANTINE_SLASH_RATE_MULTIPLIER * 
-    (
-        sqrt(validator_voting_percent_1) +
-        sqrt(validator_voting_percent_2) +
-        .. + 
-        sqrt(validator_voting_percent_n)
-    )^2
-```
-
-So, if one validator of 10% voting power faults, it gets a 10% slash (assuming `BYZANTINE_SLASH_RATE_MULTIPLIER` is `1`).
-While, if two validators of 5% voting power each fault together, they both get a 20% slash.
-
-```
-slashing_rate = BYZANTINE_SLASH_RATE_MULTIPLIER * (sqrt(validator_voting_percent_1) + sqrt(validator_voting_percent_2))^2
-              = 1 * (sqrt(0.05) + sqrt(0.05))^2
-              = 0.2
-```
-
-Finally, `slashing_amount` can be calculated by multiplying `slashing_rate` by total `bondend + unbonded` amount.
-
-```
-slash_amount_bonded = slashing_rate * bonded_amount
-slash_amount_unbonded = slashing_rate * unbonded_amount
-```
