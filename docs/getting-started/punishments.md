@@ -100,3 +100,8 @@ A validator should not be slashed more than once within `UNBONDING_PERIOD`. If a
 within that time period, it should only be slashed once (for simplicity, we'll only slash the validator for the first
 evidence that we get from tendermint and ignore other evidences until `UNBONDING_PERIOD`).
 :::
+
+:::tip Implementation note:
+To enforce that we only slash an account only once within `UNBONDING_PERIOD`, we can just check if an account is
+not jailed when we receive evidence of misbehavior from tendermint.
+:::
