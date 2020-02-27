@@ -81,11 +81,11 @@ When a validator is jailed because of a byzantine fault, their validator public 
 banned validators and cannot re-join the network as a validator with same public key.
 :::
 
-#### Un-jailing and Re-joining 
+#### Un-jailing
 
 When a jailed validator wishes to resume normal operations (after `account.jailed_until` has passed), they can create
-`UnjailTx` which marks them as un-jailed. After successful un-jailing, validators can submit a `NodeJoinTx`, which will
-add them back to validator set.
+`UnjailTx` which marks them as un-jailed. After successful un-jailing, validators can submit a `UnbondTx` and
+`WithdrawTx` to withdraw their funds.
 
 ### Slashing
 
