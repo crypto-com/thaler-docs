@@ -10,8 +10,7 @@ This is an early tutorial for the developers and brave and patient super-early a
 
 - Make sure your CPU supports SGX and it is enabled in BIOS. [This GitHub repository](https://github.com/ayeks/SGX-hardware) has more information about supported hardware and cloud vendors.
 
-- You can download the Linux SGX SDK installers from the Intel Open Source [website](https://01.org/intel-softwareguard-extensions/downloads/intel-sgx-linux-2.8-release). More details can be found in this developer [guide](https://download.01.org/intel-sgx/sgx-linux/2.8/docs/Intel_SGX_Developer_Guide.pdf) and 
-[reference](https://download.01.org/intel-sgx/sgx-linux/2.8/docs/Intel_SGX_Developer_Reference_Linux_2.8_Open_Source.pdf).
+- You can download the Linux SGX SDK installers from the Intel Open Source [website](https://01.org/intel-softwareguard-extensions/downloads/intel-sgx-linux-2.8-release). More details can be found in this [installation guide](https://download.01.org/intel-sgx/sgx-linux/2.8/docs/Intel_SGX_Installation_Guide_Linux_2.8_Open_Source.pdf).
 
 - Note that some motherboards may have only "software controlled" option where [an extra step is needed for enabling it](https://github.com/intel/linux-sgx/issues/354#issuecomment-447961815).
 
