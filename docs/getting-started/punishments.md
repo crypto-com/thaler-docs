@@ -227,7 +227,13 @@ impl LivenessTracker {
       account's `nonce` will only increase by one.
     - Remove validator from `LivenessTracker`.
     - Remove the validator from current validator set, i.e., set their voting power to zero.
+    - Add validator address to a list of permanently banned validators.
     - Generate slashing and jailing events for validator.
+
+:::tip Note:
+An additional validation for `NodeJoinTx` will be to verify if the validator address is not present in the list of
+permanently banned validators.
+:::
 
 #### `EndBlock`
 
