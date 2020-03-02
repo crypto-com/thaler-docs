@@ -223,7 +223,7 @@ impl LivenessTracker {
     `TendermintValidatorAddress` using `TendermintValidatorAddress::try_from(validator.address.as_slice())`.
   - If the validator is not already jailed (ignore if the validator is already jailed):
     - Jail and slash the validator (set `jailed_until = current_block_time + UNBONDIND_PERIOD` and slash by
-      `BYZANTINE_SLASH_PERCENT`). Not that, both, slashing and jailing should happen as one command, i.e., validator
+      `BYZANTINE_SLASH_PERCENT`). Note that, both, slashing and jailing should happen as one command, i.e., validator
       account's `nonce` will only increase by one.
     - Remove validator from `LivenessTracker`.
     - Remove the validator from current validator set, i.e., set their voting power to zero.
