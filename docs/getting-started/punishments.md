@@ -13,7 +13,7 @@ parameters and their effect on behavior of validator punishments is discussed la
 1. `UNBONDING_PERIOD`: Unbonding period will be used as jailing period (time for which an account is jailed after it
    gets punished) and also as slashing period (time to wait before slashing funds from an account). This should be
    greater than or equal to `MAX_EVIDENCE_AGE` in tendermint.
-1. `BLOCK_SIGNING_WINDOW`: Number of blocks for which the moving average is calculated for uptime tracking.
+1. `BLOCK_SIGNING_WINDOW`: Number of blocks for which the liveness is calculated for uptime tracking.
 1. `MISSED_BLOCK_THRESHOLD`: Maximum number of blocks with faulty/missed validations allowed for an account in last
    `BLOCK_SIGNING_WINDOW` blocks before it gets jailed.
 1. `LIVENESS_SLASH_PERCENT`: Percentage of funds (bonded + unbonded) slashed when a validator is non-live.
@@ -118,7 +118,7 @@ initialized from `genesis.json`.
 ```rust
 /// Configuration for computing and executing validator punishments
 pub struct PunishmentConfig {
-    /// Number of blocks for which the moving average is calculated for uptime tracking.
+    /// Number of blocks for which the liveness is calculated for uptime tracking.
     block_signing_window: u16,
     /// Maximum number of blocks with faulty/missed validations allowed for an account in last `block_signing_window`
     /// blocks before it gets jailed.
