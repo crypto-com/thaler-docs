@@ -167,6 +167,7 @@ impl LivenessTracker {
     pub fn add_validator(&mut self, tendermint_validator_address: TendermintValidatorAddress) -> Result<()> {
         todo!()
     }
+
     /// Removes validator from liveness tracking
     ///
     /// # Note
@@ -175,9 +176,10 @@ impl LivenessTracker {
     pub fn remove_validator(
         &mut self, 
         tendermint_validator_address: &TendermintValidatorAddress,
-    ) -> Result<Validator> {
+    ) -> Result<()> {
         todo!()
     }
+
     /// Updates liveness of a validator with new block data
     ///
     /// # Note
@@ -186,17 +188,18 @@ impl LivenessTracker {
     pub fn update_liveness(
         &mut self, 
         tendermint_validator_address: &TendermintValidatorAddress,
-        lock_height: BlockHeight,
+        block_height: BlockHeight,
         signed: bool,
     ) -> Result<()> {
         todo!()
     }
+
     /// Checks if a validator is live or not
     ///
     /// # Note
     ///
     /// - Returns `Err` when validator with given address does not exist
-    pub fn is_live(&self, tendermint_validator_address, &TendermintValidatorAddress) -> Result<bool> {
+    pub fn is_live(&self, tendermint_validator_address: &TendermintValidatorAddress) -> Result<bool> {
         todo!()
     }
 }
@@ -225,10 +228,14 @@ impl LivenessTracker {
     - Jail and slash the validator (set `jailed_until = current_block_time + UNBONDIND_PERIOD` and slash by
       `BYZANTINE_SLASH_PERCENT`). Note that, both, slashing and jailing should happen as one command, i.e., validator
       account's `nonce` will only increase by one.
-    - Remove validator from `LivenessTracker`.
-    - Remove the validator from current validator set, i.e., set their voting power to zero.
+    - Remove the validator from current validator set, i.e., set their voting power to zero. Validator will get removed
+      from `LivenessTracker` in `EndBlock`.
     - Add validator address to a list of permanently banned validators.
     - Generate slashing and jailing events for validator.
+
+#### `DeliverTx`
+
+- If a new node joins the validator set using `NodeJoinTx`, add the validator address of that node to `LivenessTracker`.
 
 :::tip Note:
 An additional validation for `NodeJoinTx` will be to verify if the validator address is not present in the list of
@@ -237,5 +244,7 @@ permanently banned validators.
 
 #### `EndBlock`
 
+- Remove all the validators from `LivenessTracker` whose voting power was changed to zero in the block (data can be
+  obtained from `power_changed_in_block`).
 - Set `response.validator_updates` for all the validators whose voting power was changed. Tendermint will remove all the
   validators whose voting power is set to zero, so, all the jailed validators should have zero voting power.
