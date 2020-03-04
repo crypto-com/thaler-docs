@@ -233,10 +233,6 @@ impl LivenessTracker {
     - Add validator address to a list of permanently banned validators.
     - Generate slashing and jailing events for validator.
 
-#### `DeliverTx`
-
-- If a new node joins the validator set using `NodeJoinTx`, add the validator address of that node to `LivenessTracker`.
-
 :::tip Note:
 An additional validation for `NodeJoinTx` will be to verify if the validator address is not present in the list of
 permanently banned validators.
@@ -244,6 +240,7 @@ permanently banned validators.
 
 #### `EndBlock`
 
-- Remove all the validators from `LivenessTracker` whose voting power was changed to zero in the block.
+- Update `LivenessTracker`, i.e., add all the validators who joined in current block and remove all the validator who,
+  left/got jailed in current block.
 - Set `response.validator_updates` for all the validators whose voting power was changed. Tendermint will remove all the
   validators whose voting power is set to zero, so, all the jailed validators should have zero voting power.
