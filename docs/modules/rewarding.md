@@ -62,7 +62,7 @@ During the reward period, the following sources of funds are accumulated into re
 
 The reward pool gets accumulated throughout the whole reward period; it gets distributed once at the end of each reward period.
 
-Because of integer calculations, there will be a few remained funds after distribution, they should be left to the next period.
+Due to fixed point calculations, there may be a few remainders from arithmetic operations after distribution. These remainder amounts should be left in the rewards pool for the next period.
 
 If there is zero participator for the period, the rewards pool should be left to the next period, rather than get burned.
 
