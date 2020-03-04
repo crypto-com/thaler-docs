@@ -60,7 +60,7 @@ During the reward period, the following sources of funds are accumulated into re
 - [Transaction Fees](../getting-started/transaction.md#transaction-fee)
 - Slashings
 
-The reward pool get accumulated through the whole reward period, it get distributed once at the end of reward period.
+The reward pool gets accumulated throughout the whole reward period; it gets distributed once at the end of each reward period.
 
 Because of integer calculations, there will be a few remained funds after distribution, they should be left to the next period.
 
@@ -386,4 +386,3 @@ When transaction fees are collected, the amount needs to be added to `period_bon
 reward_state.period_bonus += fees;
 node_state.rewards_pool_updated = true;
 ```
-
