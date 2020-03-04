@@ -228,10 +228,20 @@ impl LivenessTracker {
     - Jail and slash the validator (set `jailed_until = current_block_time + UNBONDIND_PERIOD` and slash by
       `BYZANTINE_SLASH_PERCENT`). Note that, both, slashing and jailing should happen as one command, i.e., validator
       account's `nonce` will only increase by one.
-    - Remove the validator from current validator set, i.e., set their voting power to zero. Validator will get removed
-      from `LivenessTracker` in `EndBlock`.
+    - Remove the validator from current validator set, i.e., set their voting power to zero (in
+      `power_changed_in_block`). Validator will get removed from `LivenessTracker` in `EndBlock`.
     - Add validator address to a list of permanently banned validators.
     - Generate slashing and jailing events for validator.
+
+:::tip How are validator updates handled in code?
+Tendermint expects all the validator updates to be done in `EndBlock`, i.e., all the validator updates are posted to
+tendermint in `EndBlock`'s response. So, we need a mechanism to store all the validator updates happened in a block and
+post those to tendermint in `EndBlock`'s response. For this purpose, we have `power_changed_in_block` (implementation
+and variable name may vary but the idea is the same) where we store all the changes in voting power that happened in a
+block. `power_changed_in_block` is cleared at the start of each new block.
+
+So, setting voting power in `power_changed_in_block` to zero means that those validators will be removed.
+:::
 
 #### `DeliverTx`
 
