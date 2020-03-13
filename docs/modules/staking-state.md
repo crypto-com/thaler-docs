@@ -1,4 +1,4 @@
-# Staking state and transitions
+# Staking states and transitions
 
 ```rust
 struct StakedState {
@@ -14,7 +14,7 @@ struct Validator {
     council_node: CouncilNode,
     jailed_until: Option<Timespec>,
     inactive_time: Option<Timespec>,
-    old_validator_keys: Vec<TendermintValidatorPubKey>,
+    used_validator_keys: Vec<(TendermintValidatorPubKey, Timespec)>,
 }
 ```
 
@@ -49,17 +49,17 @@ There are several variants of it:
 
 ## State transitions
 
-### From clean staking or inactive validator to active validator
+### From "clean staking" or "inactive(unjailed) validator" to active validator
 
 #### Node join
 
-The only way to transit to active validator is by executing `NodeJoinTx`, the preconditions is:
+The only way to transit to active validator is by executing `NodeJoinTx`, the preconditions are:
 
 - `bonded >= min_required_staking`
 - The validator pubkey/address is not banned or already used
 - Not jailed if transitting from inactive validator
 
-### From active validator to inactive validator
+### From "active validator" to "inactive validator"
 
 There are several cases for this:
 
@@ -67,13 +67,14 @@ There are several cases for this:
 
 When `bonded < min_required_staking`, this transition happens.
 
-The reasons for dropping of bonded coins are:
+The reasons for dropping of bonded coins maybe:
 
 - Execute `UnbondTx` at `deliver_tx` event
 - Slashed for non-live or byzantine faults at `begin_block` event
 
-> **_NOTE:_** The transition happens immediatelly in `deliver_tx`, won't reverse automatically when bonded coins become
-> enough again even in the same block
+> **_NOTE:_** The transition happens immediatelly in `deliver_tx` or `begin_block` events, won't reverse automatically
+> when bonded coins become enough again even in the same block, so the activeness is always well-defined during the
+> whole process.
 
 #### Jailed for byzantine faults
 
@@ -81,7 +82,16 @@ Jailed always implies inactive.
 
 This happens in `begin_block` event.
 
-### From inactive validator to clean staking
+### From "jailed validator" to "inactive(unjailed) validator"
+
+#### Unjail
+
+The only way to leave jailed validator state is by executing `UnjailTx`, the preconditions are:
+
+- Already jailed
+- `block_time >= jailed_until`
+
+### From "inactive validator" to "clean staking"
 
 #### Clean up
 
@@ -96,16 +106,7 @@ The clean up procedure will remove the validator record if:
 >
 > - `> max_evidence_age`, so we can handle delayed byzantine evidences (inactive validator can still be slashed for
 >   later detected byzantine faults)
-> - `> 2 blocks`, so when we don't panic when seeing signing vote of inactivated validators
-
-### From jailed validator to inactive(unjailed) validator
-
-#### Unjail
-
-The only way to leave jailed validator state is by executing `UnjailTx`, the preconditions are:
-
-- Already jailed
-- `block_time >= jailed_until`
+> - `> 2 blocks`, so we don't panic when seeing signing vote of inactivated validators
 
 ## Appendix
 
@@ -116,10 +117,45 @@ The final validator set that take effect in tendermint is chosen at `end_block` 
 - Sort all the active validators by `voting_power desc, staking_address`
 - Take the first `max_validators` ones
 
-For example, if you are the `max_validators + 1`th active validator, so you are not chosen yet, but if anyone in the
-chosen set quit, you will be chosen automatically at the next `end_block` event.
+The abci protocol of `end_block` event expect validator set updates in response, so we need to diff the new set against
+the current set to get the updates.
 
-### Implication of jailing
+For example, assuming `max_validators = 3`, if you are the fourth active validator, so you are not chosen yet, but in
+the future if any validator in the top 3 quit, you will be chosen automatically at the next `end_block` event:
+
+```yaml
+max_validators = 3
+
+genesis:
+  validators (map of validator address to voting power):
+  - addr1 -> 10
+  - addr2 -> 9
+
+block1:
+  deliver_tx
+  - join_node(addr3, 8)
+  - join_node(addr4, 7)
+  active validators:
+  - addr1 -> 10
+  - addr2 -> 9
+  - addr3 -> 8
+  - addr4 -> 7
+  end_block validator updates:
+  - addr3 -> 8
+
+block2:
+  deliver_tx:
+  - unbond_all(addr1)
+  active validators:
+  - addr2 -> 9
+  - addr3 -> 8
+  - addr4 -> 7
+  end_block validator updates:
+  - addr1 -> 0
+  - addr4 -> 7
+```
+
+### Implications of jailing
 
 #### Transactions
 
@@ -134,13 +170,17 @@ Disallowed transactions are:
 
 #### Reward distribution
 
-It won't distribute rewards to jailed validators, but inactive and not jailed validators get rewards as normal.
+It won't distribute rewards to jailed validators, inactive(unjailed) validators will get the rewards as normal.
 
-When a validator is jailed, it's reward participation tracking records is removed immediatelly.
+When a validator is jailed, it's reward participation tracking records are removed immediatelly.
+
+#### Process byzantine faults
+
+Jailed validators won't be slashed again for byzantine faults detected in jailing period.
 
 ### Nonce
 
-The `nonce` is increased once and exactly once for each operations mutate the `StakedState`:
+The `nonce` is increased by one once and exactly once for each operations mutate the `StakedState`:
 
 - All the transaction types that mutate staking state:
 
@@ -156,7 +196,10 @@ The `nonce` is increased once and exactly once for each operations mutate the `S
 
   > _**NOTE:**_ Slashings for different faults are considered independent operations, each slashing will increase nonce independently.
 
-- [Clean up](#clean-up)
+  > _**NOTE:**_ The inactivation and jailing operations happen at the same time as slashing, so the nonce won't increase
+  > for them again.
+
+- [Clean up](#clean-up) will set the `validator` to `None`, also increases the `nonce`.
 
 ### Liveness tracking
 
@@ -164,27 +207,28 @@ The `nonce` is increased once and exactly once for each operations mutate the `S
 
   If it doesn't appear in the votes reported by tendermint, it's recorded as a `true` which means live by default.
 
-- Inactive validator's liveness trackers are also maintained, this serve two purposes:
+- Inactive validator's liveness trackers are also maintained, and recorded as a `true` for each block, this serves two purposes:
 
-  - After a validator invalidated, the signing vote might still arrive for the next two blocks, we don't want to issue a
+  - After a validator inactivated, the signing vote might still arrive for the next two blocks, we don't want to issue a
     false warning in this case.
   - Validator might quit and re-join very fast (by `UnbondTx`/`DepositTx`/`NodeJoinTx`), in this case it's liveness
-    tracking record will preserve.
+    tracking record is preserved.
 
-So, the liveness tracker is only removed when validator record get [cleaned up](#clean-up).
+It means the liveness tracker is only removed when validator record get [cleaned up](#clean-up).
 
 ### Inactive validator re-join with different validator key
 
-When an inactive validator re-join, it can provide different validator key, but it still need to be hold responsible for
-byzantine fault committed before for as long as `max_evidence_age`. So we need to keep the old validator pub keys for
+When an inactive validator re-join, it can provide different validator key, but it still needs to be hold responsible for
+byzantine fault committed before for as long as `max_evidence_age`. So we need to keep the old validator keys for
 sometime.
 
-Currently, it's always kept in `old_validator_keys` before the whole validator record get [cleaned up](#clean-up). These
-keys can't be re-used by other validators before cleaned up.
+Whenever validator change consensus key, the old key and current block time are pushed into `used_validator_keys`, before that, the used keys older than `max_evidence_age` are removed.
+
+There is a maximum bound (`max_used_validator_keys`) on the size of `used_validator_keys` to prevent attack. After the maximum bound reached, re-join with new validator key is not allowed.
 
 ### Validator key blacklist
 
-For all the byzantine faults we received, as long as the evidene is valid, the validator key is put into a blacklist,
+For all the byzantine faults we received, as long as the evidence is valid, the validator key is put into a blacklist set,
 it's banned permanently.
 
 ### Non exists and empty staking 
@@ -202,7 +246,7 @@ StakedState {
 }
 ```
 
-For all the logic processing, the result of success execution should be the same for non exists staking and empty staking.
+For all the logic processing, the result of success execution should be the same for both non exists staking and empty staking.
 
 The error message for failed execution maybe different, for example `WithdrawTx` might report `StakingNotExists` on non
 exists staking, but `CoinError` on empty staking.
