@@ -31,8 +31,8 @@ This section aims to collect and provide brief description of all the mentioned 
 | `BLOCK_SIGNING_WINDOW`      | Window to calculate validators's liveness                                  |
 | `JAIL_DURATION`             | The time period for jailing                                                |
 | `MISSED_BLOCK_THRESHOLD`    | Threshold of total missed blocks                                           |
-| `MAX_BYZANTINE_SLASH_RATIO` | Maximum percentage of stake reduction for byzantine validators             |
-| `MAX_LIVENESS_SLASH_RATIO`  | Maximum percentage of stake reduction for validators with low availability |
+| `BYZANTINE_SLASH_PERCENT` | Maximum percentage of stake reduction for byzantine validators             |
+| `LIVENESS_SLASH_PERCENT`  | Maximum percentage of stake reduction for validators with low availability |
 
 #### Transaction fee parameters
 
