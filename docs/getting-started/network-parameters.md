@@ -4,14 +4,10 @@ This section aims to collect and provide brief description of all the mentioned 
 
 #### Staking-related parameters
 
-| Key                                | Description                                             |
-| ---------------------------------- | ------------------------------------------------------- |
-| `COUNCIL_NODE_MIN_STAKE`           | Minimum staking requirement for council node            |  |
-| `COMMUNITY_NODE_MIN_STAKE`         | Minimum staking requirement for community node          |  |
-| `PER_MERCHANT_MIN_STAKE`           | Minimum staking requirement for merchant                |
-| `CUSTOMER_ACQUIRER_NODE_MIN_STAKE` | Minimum staking requirement for customer accquirer node |  |
-| `UNBOUND_PERIOD`                   | The time duration of unbonding                          |
-| `MAX_VALIDATORS`                   | The maximum number of validator                         |
+| Key              | Description                     |
+| ---------------- | ------------------------------- |
+| `UNBOUND_PERIOD` | The time duration of unbonding  |
+| `MAX_VALIDATORS` | The maximum number of validator |
 
 #### Reward parameters
 
@@ -25,12 +21,12 @@ This section aims to collect and provide brief description of all the mentioned 
 
 #### Slashing parameters
 
-| Key                         | Description                                                                |
-| --------------------------- | -------------------------------------------------------------------------- |
-| `MAX_EVIDENCE_AGE`          | Maximum age of evidence                                                    |
-| `BLOCK_SIGNING_WINDOW`      | Window to calculate validators's liveness                                  |
-| `JAIL_DURATION`             | The time period for jailing                                                |
-| `MISSED_BLOCK_THRESHOLD`    | Threshold of total missed blocks                                           |
+| Key                       | Description                                                                |
+| ------------------------- | -------------------------------------------------------------------------- |
+| `MAX_EVIDENCE_AGE`        | Maximum age of evidence                                                    |
+| `BLOCK_SIGNING_WINDOW`    | Window to calculate validators's liveness                                  |
+| `JAIL_DURATION`           | The time period for jailing                                                |
+| `MISSED_BLOCK_THRESHOLD`  | Threshold of total missed blocks                                           |
 | `BYZANTINE_SLASH_PERCENT` | Maximum percentage of stake reduction for byzantine validators             |
 | `LIVENESS_SLASH_PERCENT`  | Maximum percentage of stake reduction for validators with low availability |
 

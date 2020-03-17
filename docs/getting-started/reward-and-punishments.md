@@ -12,7 +12,7 @@ To incentivise validators to run the network, rewards are accumulated and distri
 
 The `RewardsPoolState` data structure stores all the information about the remaining funds and distribution states:
 
-``` js
+```js
 pub struct RewardsPoolState {
     pub period_bonus: Coin, // rewards accumulated from fees and slashing during current period
     pub last_block_height: BlockHeight, // when was the pool last updated
@@ -67,9 +67,10 @@ Precisely, the reward rate is controlled by the following parameters:
 - `monetary_expansion_tau`: Initial value of tau in the reward function
 - `monetary_expansion_decay`: The decay rate of tau.
 
-You can find the configuration under the `rewards_params` section of the genesis file `genesis.json` in `./tendermint/config`, 
+You can find the configuration under the `rewards_params` section of the genesis file `genesis.json` in `./tendermint/config`,
 :::details Example: Reward configuration in the genesis
-``` js
+
+```js
 {
   "app_state": {
     ...
@@ -86,14 +87,13 @@ You can find the configuration under the `rewards_params` section of the genesis
   }
 }
 ```
+
 represents a daily scheduled reward (every `86400` seconds), with a maximum reward rate of _45%_ per annum, distributing a total sum of 22.5 billion tokens to the validators.
 :::
 
-
-
 At the end of each reward epoch, the number of tokens being released at each period is defined as:
 
-``` 
+```
     R0 = rewards_config["monetary_expansion_r0"]
     tau = rewards_config["monetary_expansion_tau"]
     P = rewards_config["distribution_period"]
@@ -129,8 +129,6 @@ The rewards validator received goes to the bonded balance of their staking accou
 
 ### Reward distribution
 
-FIXME: fix fairness; define rewarding in terms of `LastCommitInfo` instead of block proposer
-
 Rewards are distributed periodically (e.g. daily), rewards are accumulated during each period, and block proposers are recorded. At the end of each period, validators will receive a portion of the "reward pool" as a reward for participating in the consensus process. Specifically, the reward is proportional to the number of blocks that were successfully proposed by the validator; it is calculated as follows:
 
 ```
@@ -141,9 +139,9 @@ The remainder of division will become rewards of the next period.
 
 The recording of block proposer is done in `BeginBlock` right before rewards distribution.
 
-### Rewards: Implementation and interactions with ABCI
+### Rewards: Documentation and its interactions with ABCI
 
-The implementation of the reward mechanism can be found in [here](https://github.com/crypto-com/chain-docs/blob/master/docs/modules/reward.md)
+The detailed documentation of the reward mechanism can be found in [here](https://github.com/crypto-com/chain-docs/blob/master/docs/modules/reward.md)
 
 ## Validator Punishments
 
@@ -249,7 +247,6 @@ To enforce that we only slash an account only once within `UNBONDING_PERIOD`, we
 not jailed when we receive evidence of misbehavior from tendermint.
 :::
 
+### Punishments: Documentation and its interactions with ABCI
 
-### Punishments: Implementation and interactions with ABCI
-
-The implementation of the slashing mechanism can be found in [here](https://github.com/crypto-com/chain-docs/blob/master/docs/modules/punishment.md)
+The detailed documentation of the slashing mechanism can be found in [here](https://github.com/crypto-com/chain-docs/blob/master/docs/modules/punishment.md)
