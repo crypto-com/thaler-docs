@@ -91,6 +91,22 @@ You can find the configuration under the `rewards_params` section of the genesis
 represents a daily scheduled reward (every `86400` seconds), with a maximum reward rate of _45%_ per annum, distributing a total sum of 22.5 billion tokens to the validators.
 :::
 
+::: details Reward parameters explained:
+Here is a simple example of how these configuration parameters affect the reward distribution when assuming the amount of total staking is fixed:
+![](./assets/reward_parameters_explained.png)
+
+1. Firstly, `monetary_expansion_cap` controls the total amount of tokens reserved for validator's reward (**Total rewards allocation**). Note that this number can not exceed the total supply of tokens (i.e. 100 Billion )
+
+2. Afterwards, two initial values control the amount of the reward being distributed yearly at the beginning, these are:
+
+- `monetary_expansion_r0`, a positive number represents the upper bound for the reward rate per annum;
+- `monetary_expansion_tau`, the initial value of tau in the reward function.
+
+3. Finally, the size of the reward shrinks as time goes by. The contraction rate is controlled by `monetary_expansion_decay`, which is the decay rate of tau in the reward function.
+
+In addition to that, `distribution_period` controls how often the reward is being distributed.
+:::
+
 At the end of each reward epoch, the number of tokens being released at each period is defined as:
 
 ```
