@@ -281,9 +281,11 @@ The following tables show overall effects on different configuration of the rewa
 | Key                  | `monetary_expansion_cap`           | `distribution_period`             | `monetary_expansion_decay`        |
 | -------------------- | ---------------------------------- | --------------------------------- | --------------------------------- |
 | Higher               | More reserved validator reward     | Less frequent reward distribution | Tau decays slower                 |
-| Lower                | Less reserved for validator reward | More frequent reward distribution | Tau decays faster                 |
+| Lower                | Less reserved validator reward     | More frequent reward distribution | Tau decays faster                 |
 | Constraints          | Less than the maximum token supply | Value has to be positive          | Positive value less than 1000000  |
 | Sample configuration | 2e18 (20% of the total supply)     | 86400 (reward distributed daily)  | 999860 (Tau dropped by 5% yearly) |
+
+For initial values:
 
 | Key                  | `monetary_expansion_r0`        | `monetary_expansion_tau`  |
 | -------------------- | ------------------------------ | ------------------------- |
