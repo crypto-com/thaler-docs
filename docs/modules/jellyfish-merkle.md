@@ -41,13 +41,13 @@ can query the old state, unless we decide to prune the states that is too old.
 - Flatten a 4 layer complete binary tree into array of 16 leaf nodes, this reduces the total numbers of nodes.
 
   The internal node only stores leaf nodes of this sub-tree, these leaf nodes might denote either a leaf node or an
-internal node in outer tree.
+  internal node in outer tree.
 
   The hash of the internal node is the root hash of this subtree, which is computed like this:
 
   ```text
   InternalNode[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F]
-
+  
     4 ->              +------ root hash ------+
                       |                       |
     3 ->        +---- # ----+           +---- # ----+
@@ -64,11 +64,13 @@ internal node in outer tree.
 
   We also need treat it as a sub-tree when generating merkle proof.
 
-  And when traversing the internal nodes, we need to iterate the 32 bytes key in units of 4-bit nibbles like this:
-
-  ```rust
-  0x0123456789abcdef -> [0x0, 0x1, 0x2, 0x3, ...]
-  ```
+  > **Nibbles**
+  >
+  > When traversing the internal nodes, we need to iterate the 32 bytes key in units of 4-bit nibbles like this:
+  > 
+  > ```rust
+  > 0x0123456789abcdef -> [0x0, 0x1, 0x2, 0x3, ...]
+  > ```
 
 - Replace a subtree which has no non-empty leaf node with a `None`.
 
