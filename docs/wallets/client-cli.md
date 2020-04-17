@@ -396,7 +396,7 @@ Enter authentication token: ## Insert your authentication token ##
 :::tip Note
 
 - Please note that `balance` will only show your _transferable_ balance, for _staking_ related balance, please check it with the `state` [command](#state-check-the-staking-state).
-- Once a transaction has been sent, the transaction amount and fees will go to "_Pending_" status. The balance will be settled once the transaction has been confirmed. Therefore, It is suggested that you should `sync` your wallet before checking the balance to obtain the latest balance.
+- Once a transaction has been sent, the remaining amount ( _Total_ amount subtracted by the transaction amount and fees) will go to "_Pending_" status. The balance will be settled once the transaction has been confirmed. Therefore, It is suggested that you should `sync` your wallet before checking the balance to obtain the latest balance.
   :::
 
 ### `history` - Check your transaction history
