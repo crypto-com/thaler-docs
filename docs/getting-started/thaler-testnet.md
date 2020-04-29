@@ -140,7 +140,7 @@ If the created address matches one of the ones listed in the initial _genesis.js
 This can be done, for example, with the client-cli command-line tool. Set the required environment variables:
 
 - `CRYPTO_CHAIN_ID=testnet-thaler-crypto-com-chain-42`
-- `CRYPTO_CLIENT_TENDERMINT <YOUR FULL NODE, e.g. ws://localhost:26657/websocket or ws://13.94.208.212:26657/websocket>`
+- `CRYPTO_CLIENT_TENDERMINT=<YOUR FULL NODE, e.g. ws://localhost:26657/websocket or ws://13.94.208.212:26657/websocket>`
 
 And run the followings to create a new [HD-wallet](../wallets/client-cli.html#wallet-new-create-a-new-wallet) and [staking address](../wallets/client-cli.html#address-new-create-a-new-address):
 
