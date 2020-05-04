@@ -6,11 +6,11 @@ This is an early tutorial for the developers and brave and patient super-early a
 
 ## Common Setup
 
-### Step 0. Install Intel SGX SDK 2.8 and other pre-requisites
+### Step 0. Install Intel SGX SDK 2.9 and other pre-requisites
 
 - Make sure your CPU supports SGX, and it is enabled in BIOS. [This GitHub repository](https://github.com/ayeks/SGX-hardware) has more information about supported hardware and cloud vendors.
 
-- You can download the Linux SGX SDK installers from the Intel Open Source [website](https://01.org/intel-softwareguard-extensions/downloads/intel-sgx-linux-2.8-release). More details can be found in this [installation guide](https://download.01.org/intel-sgx/sgx-linux/2.8/docs/Intel_SGX_Installation_Guide_Linux_2.8_Open_Source.pdf).
+- You can download the Linux SGX SDK installers from the Intel Open Source [website](https://01.org/intel-softwareguard-extensions/downloads/intel-sgx-linux-2.9.1-release). More details can be found in this [installation guide](https://download.01.org/intel-sgx/sgx-linux/2.9.1/docs/Intel_SGX_Installation_Guide_Linux_2.9.1_Open_Source.pdf).
 
 - Note that some motherboards may have only "software controlled" option where [an extra step is needed for enabling it](https://github.com/intel/linux-sgx/issues/354#issuecomment-447961815).
 
@@ -23,16 +23,16 @@ has Intel PSW and other dependencies pre-installed
 expose it to the container by running docker with the `--device /dev/isgx` flag).
 :::
 
-### Step 1. Get Tendermint and Chain v0.4 released binaries
+### Step 1. Get Tendermint and Chain v0.5 released binaries
 
 Download the latest version of [Tendermint 0.33.\*](https://docs.tendermint.com/master/introduction/install.html#from-binary).
-Chain v0.4 can be [downloaded from GitHub](https://github.com/crypto-com/chain/releases/download/v0.4.0/crypto-com-chain-release-0.4.0.tar.gz).
+Chain v0.5 can be [downloaded from GitHub](https://github.com/crypto-com/chain/releases/download/v0.5.0/crypto-com-chain-release-0.5.0.tar.gz).
 
 ::: warning CAUTION
-Crypto.com Chain v0.4 is not backwards compatible with v0.3 released earlier. So, if you were running a node with the old
+Crypto.com Chain v0.5 is not backwards compatible with v0.3 nor v0.4 released earlier. So, if you were running a node with the old
 version of Crypto.com Chain, you will have to delete all the associated data.
 
-Also, please note the [released binary changes](https://github.com/crypto-com/chain/releases/tag/v0.4.0).
+Also, please note the [released binary changes](https://github.com/crypto-com/chain/releases/tag/v0.5.0).
 :::
 
 ### Step 2. Configure Tendermint
