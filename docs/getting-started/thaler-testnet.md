@@ -23,16 +23,16 @@ has Intel PSW and other dependencies pre-installed
 expose it to the container by running docker with the `--device /dev/isgx` flag).
 :::
 
-### Step 1. Get Tendermint and Chain v0.5.1 released binaries
+### Step 1. Get Tendermint and Chain v0.5.2 released binaries
 
 Download the latest version of [Tendermint 0.33.\*](https://docs.tendermint.com/master/introduction/install.html#from-binary).
-Chain v0.5.1 can be [downloaded from GitHub](https://github.com/crypto-com/chain/releases/download/v0.5.1/crypto-com-chain-release-0.5.1.tar.gz).
+Chain v0.5.2 can be [downloaded from GitHub](https://github.com/crypto-com/chain/releases/download/v0.5.2/crypto-com-chain-release-0.5.2.tar.gz).
 
 ::: warning CAUTION
 Crypto.com Chain v0.5 is not backwards compatible with v0.3 nor v0.4 released earlier. So, if you were running a node with the old
 version of Crypto.com Chain, you will have to delete all the associated data.
 
-Also, please note the [released binary changes](https://github.com/crypto-com/chain/releases/tag/v0.5.1).
+Also, please note the [released binary changes](https://github.com/crypto-com/chain/releases/tag/v0.5.2).
 :::
 
 ### Step 2. Configure Tendermint
