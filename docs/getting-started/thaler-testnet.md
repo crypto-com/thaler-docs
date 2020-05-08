@@ -23,7 +23,7 @@ has Intel PSW and other dependencies pre-installed
 expose it to the container by running docker with the `--device /dev/isgx` flag).
 :::
 
-### Step 1. Get Tendermint and Chain v0.5.2 released binaries`
+### Step 1. Get Tendermint and Chain v0.5.2 released binaries
 
 Download the latest version of [Tendermint 0.33.\*](https://docs.tendermint.com/master/introduction/install.html#from-binary).
 Chain v0.5.2 can be [downloaded from GitHub](https://github.com/crypto-com/chain/releases/download/v0.5.2/crypto-com-chain-release-0.5.2.tar.gz).
