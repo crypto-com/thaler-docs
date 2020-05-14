@@ -467,7 +467,7 @@ Validator could be [punished](../getting-started/reward-and-punishments.md#valid
 $ ./bin/client-cli transaction new --name Default --type unjail
 ```
 
-### `expoet`/`import` - Export & Import Transactions
+### `export`/`import` - Export & Import Transactions
 
 As mentioned before, sender should add the receiver's view-key to the transaction. Because sender can't push data directly to the receiver. However, it is also possible to send / receive a payment by directly exchanging the (raw) transaction payload data. The sender (who creates the transaction) would export it, the receiver would import it and check the transaction data locally and check the transaction ID against the distributed ledger. Following explains the flow:
 
@@ -552,8 +552,8 @@ Some of the actual use cases of multi-signature are covered in these [applicatio
       Enter authentication token:
   ## Insert N different public keys for the multi-signature address ##
       Enter public keys(include self public key, separated by commas):<Public_Key_1, Public_Key_2, ..., Public_Key_N>
-  ## Insert your own pulblic key in the wallet ##
-      input self pulblic key: 02a71aef2e97bdbffbf526548cf475103a82853fce43403eef40a55d17715fa6a1
+  ## Insert your own public key in the wallet ##
+      input self public key: 02a71aef2e97bdbffbf526548cf475103a82853fce43403eef40a55d17715fa6a1
   ## Insert the number of signatures required to release the fund##
       how many signatures required: M
 ```
