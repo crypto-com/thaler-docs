@@ -9,7 +9,7 @@ Specifically, the genesis file includes the following fields:
 - `"genesis_time"`:
   The time of beginning of the blockchain
 - `"chain_id"`:
-  A unique identifier for the blockchain.
+  A unique identifier for the blockchain. The *"network id"* is the last two hex characters of this field. See [this](./chain-id-and-network-id.md) for further details.
 - `"app_hash"`:
   The expected application hash upon genesis (returning from the chain-abci).
 - `"app_state"`:
@@ -71,7 +71,7 @@ Specifically, the genesis file includes the following fields:
     The configuration of evidence of malfeasance by validators.
 
     - `"max_age_num_blocks"`:
-      The maximum age of evidence, in blocks.
+       *This field is to be deprecated.*
     - `"max_age_duration"`:
       The time duration of unbonding, in nanoseconds.
 
