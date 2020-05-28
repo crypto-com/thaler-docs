@@ -4,7 +4,7 @@ The `genesis.json` file defines the initial state of the Crypto.com chain. On to
 
 ## Fields in genesis
 
-. Specifically, the genesis file includes the following fields:
+Specifically, the genesis file includes the following fields:
 
 - `"genesis_time"`:
   The time of beginning of the blockchain
