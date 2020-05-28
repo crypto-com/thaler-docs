@@ -78,7 +78,7 @@ Specifically, the genesis file includes the following fields:
 
 ### Genesis hash
 
-Light client allows users to access and interact with the blockchain without having to run a full node. To ensure the light client is served by a full node with the correct blockchain data, we can computed the **genesis hash** locally beforehand and check it against the full node that we are connecting to.
+Light client allows users to access and interact with the blockchain without having to run a full node. To ensure the light client is served by a full node with the correct blockchain data, we can compute the **genesis hash** locally beforehand and check it against the full node that we are connecting to.
 
 Specifically, this **genesis hash** is computed by the `compute_genesis_hash` function: where we take `"genesis_time"`,`"app_hash"`, `"consensus_params"`; and `"chain_id"` from the genesis file as inputs and hash it by the _blake3_ hash function.
 
