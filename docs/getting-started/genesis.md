@@ -14,35 +14,13 @@ Specifically, the genesis file includes the following fields:
   The expected application hash upon genesis (returning from the chain-abci).
 - `"app_state"`:
   The application state.
-  - `"keypackage"`:
-    The public information that other nodes can use for key agreement.
+
   - `"council_nodes"`:
     The initial validator set.
-- `"distribution`:
-  The initial distribution and bonding state of the tokens.
-- `"consensus_params"`:
-  The consensus critical parameters that determine the validity of blocks.
-
-  - `"block"`:
-    The minimum time increment between consecutive blocks, in milliseconds.
-
-    - `"max_bytes"`:
-      The maximum block size, in bytes.
-    - `"max_gas"`:
-      The limit of the amount of gas that can be used in a block. See this [link](https://docs.tendermint.com/master/spec/abci/apps.html#gas) for further details.
-    - `"time_iota_ms"`:
-      The minimum time between consecutive blocks.
-
-  - `"evidence"`:
-    The configuration of evidence of malfeasance by validators.
-
-    - `"max_age_num_blocks"`:
-      The maximum age of evidence, in blocks.
-    - `"max_age_duration"`:
-      The maximum age of evidence, in nanoseconds.
-
-  - `"validator"`:
-    The initial state of the validator set.
+    - `"keypackage"`:
+      The public information that other nodes can use for key agreement.
+  - `"distribution`:
+    The initial distribution and bonding state of the tokens.
   - `"network_params"`:
     The network parameters
     - `"initial_fee_policy"`:
@@ -75,6 +53,33 @@ Specifically, the genesis file includes the following fields:
         The maximum percentage of stake reduction for byzantine validators.
       - `"liveness_slash_percent"`:
         The maximum percentage of stake reduction for validators with low availability.
+
+- `"consensus_params"`:
+  The consensus critical parameters that determine the validity of blocks.
+
+  - `"block"`:
+    The block formation structure.
+
+    - `"max_bytes"`:
+      The maximum block size, in bytes.
+    - `"max_gas"`:
+      The default value is "-1", i.e., no rules about gas are enforced.
+    - `"time_iota_ms"`:
+      The minimum time increment between consecutive blocks, in milliseconds.
+
+  - `"evidence"`:
+    The configuration of evidence of malfeasance by validators.
+
+    - `"max_age_num_blocks"`:
+      The maximum age of evidence, in blocks.
+    - `"max_age_duration"`:
+      The time duration of unbonding, in nanoseconds.
+
+  - `"validator"`
+    - `"pub_key_types"`: The supported validator public key types.
+
+- `"validators"`:
+  The initial state of the validator set.
 
 ### Genesis hash
 
