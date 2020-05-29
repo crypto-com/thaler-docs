@@ -9,7 +9,7 @@ Specifically, the genesis file includes the following fields:
 - `"genesis_time"`:
   The time of beginning of the blockchain
 - `"chain_id"`:
-  A unique identifier for the blockchain. The *"network id"* is the last two hex characters of this field. See [this](./chain-id-and-network-id.md) for further details.
+  A unique identifier for the blockchain. The _"network id"_ is the last two hex characters of this field. See [this](./chain-id-and-network-id.md) for further details.
 - `"app_hash"`:
   The expected application hash upon genesis (returning from the chain-abci).
 - `"app_state"`:
@@ -18,7 +18,7 @@ Specifically, the genesis file includes the following fields:
   - `"council_nodes"`:
     The initial validator set.
     - `"keypackage"`:
-      The public information that other nodes can use for key agreement.
+      The public information that other nodes can use for key agreement, see [this](https://github.com/mlswg/mls-protocol/blob/master/draft-ietf-mls-protocol.md#key-packages) for further details.
   - `"distribution`:
     The initial distribution and bonding state of the tokens.
   - `"network_params"`:
@@ -71,9 +71,9 @@ Specifically, the genesis file includes the following fields:
     The configuration of evidence of malfeasance by validators.
 
     - `"max_age_num_blocks"`:
-       *This field is to be deprecated.*
+      _This field is to be deprecated._
     - `"max_age_duration"`:
-      The time duration of unbonding, in nanoseconds.
+      The maximum age of evidence, in nanoseconds. It is also the "unbonding period", the time duration of unbonding.
 
   - `"validator"`
     - `"pub_key_types"`: The supported validator public key types.
