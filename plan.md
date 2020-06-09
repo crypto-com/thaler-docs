@@ -281,7 +281,7 @@ among validators. The protocol for the group communication channel follows the [
 * Each validator's transaction data bootstrapping enclave retrieves the identities of other validators,
 * Based on the validator identities (sorted by the validator staking address), each validator's transaction data bootstrapping enclave
 initializes GroupContext (constructs a ratchet tree with its leaves populated with the public keys and credentials from the UserInitKeys etc.)
-* If a validator validator is removed or added, the corresponding MLS handshake messages are generated and broadcasted as transactions using Tendermint P2P
+* If a validator is removed or added, the corresponding MLS handshake messages are generated and broadcasted as transactions using Tendermint P2P
 -- transaction validation enclave either only checks the outer signature (in the case of non-validator nodes) or relays it to the transaction 
 data bootstrapping enclave (in the case of validator nodes) where the node fully checks the messages and updates its group state
 * Once group communication channel is established or whenever the group state changes, the key for transaction data obfuscation is re-generated.
