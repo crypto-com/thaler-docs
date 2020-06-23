@@ -183,7 +183,7 @@ for encrypted parts (`Welcome`, `DirectPathNode`...))
 
 ##### TDBE handling / generation
 TDBE runs as a standalone enclave which includes TM light client and reacts to information received from it.
-For fetched transactions with MLS hanshake messages, it should verify they are valid (i.e. their TXID is a leaf in the Merkle tree
+For fetched transactions with MLS handshake messages, it should verify they are valid (i.e. their TXID is a leaf in the Merkle tree
 of valid transactions in a particular block).
 It opens mutually attested TLS connection to tx-validation enclave (TVE) for pushing exported obfuscation keys.
 
@@ -256,7 +256,7 @@ Notably, it needs:
 they should be removed from the validator set (similar to liveness fault handling)
 - to keep track if valid `CommitChangeTx` was received in time -- invalid one receive similar treatment as byzantine faults (removal from validator set if a validator + slash)
 - to keep track if valid `NACK` was received after a "valid" `CommitChangeTx` -- NACK invalidating `CommitChangeTx` should treat the `CommitChangeTx` similar to byzantine faults
-- after CommitChangeTx -- after block commit and NACK timeout, enquire TVE if it was pushed a new key;
+- after `CommitChangeTx` -- after block commit and NACK timeout, enquire TVE if it was pushed a new key;
 if not, it is a local node problem (e.g. no running TDBE) -- TODO: block consensus state machine or shutdown?
 
 \[\[ OPEN ISSUE: 
