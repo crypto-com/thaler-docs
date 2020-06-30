@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -e
+
+# upload to s3
+
+echo "s3 sync 📡"
+aws s3 sync docs/.vuepress/dist s3://${S3_BUCKET} --delete --region ${REGION}
+
+# invalidate cloudfront distribution
+echo "invalidate cloudfront distribution 🔄"
+aws cloudfront create-invalidation --distribution-id ${CLOUDFRONT_DISTRIBUTION_ID} --paths '/docs*'
