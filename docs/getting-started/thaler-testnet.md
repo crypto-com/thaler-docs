@@ -6,15 +6,20 @@ This is an early tutorial for the developers and brave and patient super-early a
 
 ## Common Setup
 
-### Step 0. Install Intel SGX SDK 2.9 and other pre-requisites
+### Step 0. Install Intel SGX Driver, PSW 2.9 and other pre-requisites
 
 - Make sure your CPU supports SGX, and it is enabled in BIOS. [This GitHub repository](https://github.com/ayeks/SGX-hardware) has more information about supported hardware and cloud vendors.
 
-- You can download the Linux SGX SDK installers from the Intel Open Source [website](https://01.org/intel-softwareguard-extensions/downloads/intel-sgx-linux-2.9.1-release). More details can be found in this [installation guide](https://download.01.org/intel-sgx/sgx-linux/2.9.1/docs/Intel_SGX_Installation_Guide_Linux_2.9.1_Open_Source.pdf).
+- To run testnet, your machine must have SGX driver and PSW installed. You can download binary to install the Linux SGX driver from the Intel Open Source [website](https://01.org/intel-softwareguard-extensions/downloads/intel-sgx-linux-2.9.1-release). More details about SGX driver and PSW can be found in this [installation guide](https://download.01.org/intel-sgx/sgx-linux/2.9.1/docs/Intel_SGX_Installation_Guide_Linux_2.9.1_Open_Source.pdf) [page 7].
 
 - Note that some motherboards may have only "software controlled" option where [an extra step is needed for enabling it](https://github.com/intel/linux-sgx/issues/354#issuecomment-447961815).
 
 - You may also need to install libzmq (e.g. [libzmq3-dev](https://packages.ubuntu.com/xenial/libzmq3-dev) package in Ubuntu 18.04).
+::: details Install libzmq3-dev
+```bash
+$ sudo apt install libzmq3-dev -y
+```
+:::
 
 ::: tip NOTE
 There is an Ubuntu-based Docker image `cryptocom/chain:latest` on Dockerhub that
