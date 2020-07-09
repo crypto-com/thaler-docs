@@ -18,7 +18,7 @@ You can look for your Intel CPU model on the [Intel Product Specifications websi
 - 100GB storage space
 
 ::: tip NOTE
-If you are using Microsoft Azure, you will need to create an instance of [Azure Confidential Computing](https://portal.azure.com/#create/microsoft-azure-compute.acc-virtual-machine-v2acc-virtual-machine-v2) with the above hardware requirement.
+If you are using Microsoft Azure, you will need to create an instance of [Azure Confidential Computing (login required)](https://portal.azure.com/#create/microsoft-azure-compute.acc-virtual-machine-v2acc-virtual-machine-v2) with the above hardware requirement.
 
 You will also need to create an extra disk in the Azure panel and mount it to the created instance. Instructions can be found [here](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/attach-disk-portal).
 :::
@@ -48,7 +48,7 @@ If you are running on Azure Confidential Computing machines, you will only need 
 
 ### Step 0-1. Install aesmd service
 
-- After you have installed Intel SGX PSW 2.9 using the step 0-0 [installation guide](https://download.01.org/intel-sgx/sgx-linux/2.9.1/docs/Intel_SGX_Installation_Guide_Linux_2.9.1_Open_Source.pdf), run the following command to install aesm service:
+- After you have installed Intel SGX PSW 2.9 using the [installation guide](https://download.01.org/intel-sgx/sgx-linux/2.9.1/docs/Intel_SGX_Installation_Guide_Linux_2.9.1_Open_Source.pdf) from [step 0-0](#step-0-0-install-intel-sgx-2-9), run the following command to install aesm service:
 
 ```bash
 sudo apt install libsgx-uae-service
@@ -368,7 +368,7 @@ stating who you are and your staking address (@devashishdxt or @lezzokafka would
 
 ### Step 3-b-3. Create a validator key pair
 
-- In a development mode, the full key pair is located in the `~/.tendetmint/config/priv_validator_key.json` ;
+- In a development mode, the full key pair is located in the `~/.tendertmint/config/priv_validator_key.json` ;
 
 - If the file does not exist, you can initialize the tendermint root directory by running `tendermint init`.
   The public key should be base64-encoded, e.g. `R9/ktG1UifLZ6nMHNA/UZUaDiLAPWt+m9I4aujcAz44=`.
