@@ -51,7 +51,7 @@ them as default.
 
 SSH to the Azure VM, and start the environment setup for Crypto.com Chain.
 
-- Install `Docker`: you can refer to following document [How To Install and Use Docker on Ubuntu 18.04
+- Install `Docker`: you can refer to following document on ["How To Install and Use Docker on Ubuntu 18.04"
   ](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04)
 
 Make sure you have complete the part of `Executing the Docker Command Without Sudo` by:
@@ -116,12 +116,14 @@ The Intel SGX attestation service is a public web service operated by Intel for 
 In short, you should go to [Intel Portal](https://api.portal.trustedservices.intel.com/EPID-attestation)
 to sign up for the ID and KEY. It won't take you more than 5 minutes.
 
-Make sure what your subscription is [DEV Intel® Software Guard Extensions Attestation Service (Unlinkable)](https://api.portal.trustedservices.intel.com/Products/dev-intel-software-guard-extensions-attestation-service-unlinkable). Your `SPID` and `Primary key` will be shown on the portal as below:
+Make sure what your subscription is the product ["DEV Intel® Software Guard Extensions Attestation Service (Unlinkable)"](https://api.portal.trustedservices.intel.com/Products/dev-intel-software-guard-extensions-attestation-service-unlinkable).
+
+Under the "[Manage Subscriptions page](https://api.portal.trustedservices.intel.com/developer)"  (login required), your `SPID` and `Primary key` will be shown on the portal as below:
 
 ![](./assets/intel_sub.png)
 
 After you obtained your `SPID` and `Primary key` from Intel, you should embed them to your `.profile` file
-as environment variables with the other two variables (`SGX_MODE`, `NETWORK_HEX_ID`) we mentioned above. So, make sure append
+as environment variables. So, make sure append
 the following lines in your `.profile` file.
 
 ```

@@ -11,7 +11,12 @@ please refer to [ClientCLI](../wallets/client-cli).
 
  ![](./assets/states.png)
 
-## Configuring your environment to connect 
+Specifically, the blockchain begins with this [genesis file](https://github.com/crypto-com/chain/blob/master/docker/config/devnet/tendermint/genesis.json), which you can [see that](https://github.com/crypto-com/chain/blob/master/docker/config/devnet/tendermint/genesis.json#L20-L22) funds has already been distributed to some addresses at the beginning. In this documentation, we will
+
+- Restore the wallet with the default [mnemonics](https://github.com/crypto-com/chain/blob/master/docker/config/devnet/tendermint/mnemonics.txt#L1);
+- Obtain the allocated funds and perform transactions.
+
+
 To start using the wallet, you have to configure your environment with the node information:
 ```
 $ export CRYPTO_CHAIN_ID=test-chain-y3m1e6-AB
