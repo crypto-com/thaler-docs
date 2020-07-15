@@ -7,7 +7,7 @@ For anyone interested more on wallet management, getting testing token from the 
 please refer to [ClientCLI](../wallets/client-cli).
 :::
 
-Before sending the transaction, please notice that the genesis fund is stored in a staking address at the beginning. You first have to **withdraw** it to UTXO:
+Crypto.com Chain uses a hybrid transaction accounting model with different transaction types. Before sending the transaction, please notice that the genesis fund is stored in a _staking_ address at the beginning. You first have to **withdraw** it to UTXO:
 
 ![](./assets/states.png)
 
@@ -47,9 +47,16 @@ A pre-created Hierarchical Deterministic (HD) Wallet wallet mnemonic with genesi
 
 You will get the `Authentication token`, keep the token safe and it will be needed for all authorized commands.
 
-## Create Transfer & Staking Address
+## Create _Transfer_ & _Staking_ Address
 
-- Next, generate two `Staking` type addresses with the `Default` wallet you have just restored:
+Once we have a restore wallet, we are now ready to create new addresses for performing transaction: The most common address types in Crypto.com Chain are
+
+1. _Staking_ address: For staking related operations;
+2. _Transfer_ address: For token transfer.
+
+#### Create _Staking_ addresses
+
+- Firstly we generate **two** `Staking` type addresses with the `Default` wallet you have just restored:
 
   ```bash
   $ ./target/debug/client-cli address new --name Default --type Staking
@@ -57,13 +64,15 @@ You will get the `Authentication token`, keep the token safe and it will be need
   New address: 0x45c1851c2f0dc6138935857b9e23b173185fea15
   ```
 
-- Run it another time and obtain the staking address `0x2dfd...38ea8` that stores the genesis funds:
+- Run it another time and obtain the _staking_ address `0x2dfd...38ea8` that stores the genesis funds:
 
   ```bash
   $ ./target/debug/client-cli address new --name Default --type Staking
   Enter authentication token:       # Input the Authentication token
   New address: 0x2dfde2178daa679508828242119dcf2114038ea8
   ```
+
+#### Create a _Transfer_ address
 
 - Afterwards, you can create a `Transfer` type address in the `Default` to receive the genesis funds:
 
@@ -72,6 +81,8 @@ You will get the `Authentication token`, keep the token safe and it will be need
   Enter authentication token:       # Input the Authentication token
   New address: dcro1kxl8xy6k8twhes6j972mrzurfvgms0e549z852cgqyl796jss89sadlmgd
   ```
+
+#### Sync your wallet
 
 - It is important to keep your wallet sync with the blockchain. This can be easily done by the `sync` command:
 
@@ -82,7 +93,9 @@ You will get the `Authentication token`, keep the token safe and it will be need
   Synchronization complete!
   ```
 
-- You can now check the status of the staking address `0x2dfd...38ea8` by the following command:
+#### Check the genesis funds
+
+- Once your wallet has been synced, you can check the _status_ of the _staking_ address `0x2d..38ea8` by the following command:
 
   ```
   $ ./target/debug/client-cli state --name Default --address 0x2dfde2178daa679508828242119dcf2114038ea8
@@ -103,8 +116,9 @@ You will get the `Authentication token`, keep the token safe and it will be need
   | Slash Amount    |               Not punished |
   +-----------------+----------------------------+
   ```
-As in the above example, you can see that there are `5000000000 CRO` test token in the staking address that is `Unbonded` and ready to go. 
- 
+
+  As in the above example, you can see that there are `5000000000 CRO` test token in the _staking_ address that is `Unbonded` and ready to go.
+
 ::: tip Note: If you encounter a fingerprint mismatched error
 
 ```bash
@@ -121,72 +135,115 @@ $ export CRYPTO_GENESIS_FINGERPRINT=934B7A20886EE47EC495AFFBF305809D5F4E9CDA6E41
 
 :::
 
-## Withdraw the genesis funds
+### Withdraw the genesis funds
 
-- We are now ready to move the genesis funds from the staking address `0x2dfd...38ea8`. To do this, we will perform a `Withdraw` type transaction that withdraw the funds from the staking address `Unbonded` balance  
-  to the transfer address `dcro1k...dlmgd` we have just created.
+The following is the transaction flow between _Staking_ address and _Transfer_ addresses with transaction types `Deposit`, `Withdraw`, `Deposit` and `Unbond`.
 
-  ```bash
-  $ ./target/debug/client-cli transaction new --name Default --type Withdraw
-  Enter authentication token:       # Input the Authentication token
-  Enter staking address: 0x2dfde2178daa679508828242119dcf2114038ea8
-  Enter transfer address: dcro1kxl8xy6k8twhes6j972mrzurfvgms0e549z852cgqyl796jss89sadlmgd
-  Enter view keys (comma separated) (leave blank if you don't want any additional view keys in transaction):
-  # Leave blank because this tx is in same wallet
-  Transaction successfully created
-  ```
+```bash
+|   Staking   |       |     Transfer     |
+|   address   |       |      address     |
+| 0x2d..38ea8 |       |  dcro1k...dlmgd  |
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
++-------------+
+│             │    Withdraw
+│  Unbonded   +----------------+
+│   Balance   │                │
+│             │                │
++------+------+                v
+       ^              +--------+--------+
+       │              │   Transferable  │
+Unbond │              │                 |
+       │              │     Balance     │
+       │              +--------+--------+
++------+------+                │
+│             │                │
+│   Bonded    │                │
+│   Balance   + <--------------+
+│             │    Deposit
++-------------+
+```
+
+We will cover the `Withdraw` type type in this section. For for further details on the other transaction types, please kindly refer to the [transaction operations](../wallets/client-cli.md#transaction-operations).
+
+#### `Withdraw` type transaction: Withdraw the unbonded funds
+
+- We are now ready to move the genesis funds from the _staking_ address `0x2d..38ea8`. To do this, we will perform a `Withdraw` type transaction that withdraw the funds from the _staking_ address `Unbonded` balance to the transfer address `dcro1k...dlmgd` we have just created.
+
+```bash
+$ ./target/debug/client-cli transaction new --name Default --type Withdraw
+Enter authentication token:       # Input the Authentication token
+Enter staking address: 0x2dfde2178daa679508828242119dcf2114038ea8
+Enter transfer address: dcro1kxl8xy6k8twhes6j972mrzurfvgms0e549z852cgqyl796jss89sadlmgd
+Enter view keys (comma separated) (leave blank if you don't want any additional view keys in transaction):
+# Leave blank because this tx is in same wallet
+Transaction successfully created
+```
 
 - Then, you can `sync` and check `balance` of your wallet:
 
-    ```bash
-    $ ./target/debug/client-cli sync --name Default --disable-fast-forward
-    Enter authentication token:       # Input the Authentication token
-    Synchronizing: 1951 / 1951 [=================================] 100.00 % 930.09/s
-    Synchronization complete!
-    ```
+  ```bash
+  $ ./target/debug/client-cli sync --name Default --disable-fast-forward
+  Enter authentication token:       # Input the Authentication token
+  Synchronizing: 1951 / 1951 [=================================] 100.00 % 930.09/s
+  Synchronization complete!
+  ```
 
-- You can now check your `balance`. Noted that the `Available` only includes the transferable balance and the bonded/unbonded amount are not included:
+- You can now check your `balance`. Noted that the `Available` only includes the transferable balance and the bonded/unbonded amount of your _staking_ address are not included:
 
-    ```bash
-    $ ./target/debug/client-cli balance --name Default
-    Enter authentication token:       # Input the Authentication token
-    +-----------+---------------------+
-    | Total     | 5000000000.00000000 |
-    +-----------+---------------------+
-    | Pending   | 0.00000000          |
-    +-----------+---------------------+
-    | Available | 5000000000.00000000 |
-    +-----------+---------------------+
-    ```
+  ```bash
+  $ ./target/debug/client-cli balance --name Default
+  Enter authentication token:       # Input the Authentication token
+  +-----------+---------------------+
+  | Total     | 5000000000.00000000 |
+  +-----------+---------------------+
+  | Pending   | 0.00000000          |
+  +-----------+---------------------+
+  | Available | 5000000000.00000000 |
+  +-----------+---------------------+
+  ```
 
 Congratulations! You have successfully withdrawn all the unbonded genesis fund and now we will be able to transfer the test tokens to the others.
 
-## Transfer CRO to another address
+## Transfer CRO to another address/wallet
 
-- First, you can create another wallet with the name `Bob`, or whatever name you like. The wallet type could be `hd` (Hierarchical Deterministic) or `basic`:
+To transfer token between different wallets, we can create another wallet with the name `Bob`, or whatever name you like. The wallet type could be `hd` (Hierarchical Deterministic) or `basic`:
 
-    ```bash
-    $ ./target/debug/client-cli wallet new --name Bob --type hd
-    Enter passphrase:
-    Confirm passphrase:
-    Please store following mnemonic safely to restore your wallet later:
-    Mnemonic: cabin typical scheme rather hood sunny salon mansion hazard update video drill century athlete argue human discover dish arrow soccer science ocean puppy wagon
-    Authentication token: 650aca93fdb6e6eeb988026d92e796c28f0306390a49d6bfd75160ea07e6bcb6
-    ```
+  ```bash
+  $ ./target/debug/client-cli wallet new --name Bob --type hd
+  Enter passphrase:
+  Confirm passphrase:
+  Please store following mnemonic safely to restore your wallet later:
+  Mnemonic: cabin typical scheme rather hood sunny salon mansion hazard update video drill century athlete argue human discover dish arrow soccer science ocean puppy wagon
+  Authentication token: 650aca93fdb6e6eeb988026d92e796c28f0306390a49d6bfd75160ea07e6bcb6
+  ```
+The following is the transaction flow between the *Transfer* addresses in `Default` wallet and the wallet `Bob`, with transaction types `Transfer`:
+```
+│     Transfer     │                │     Transfer     │
+│    address in    │                │    address in    │
+│ "Default" wallet │                │   "Bob" wallet   │
+¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
++-----------------+                 +-----------------+
+│   Transferable  │     Transfer    │   Transferable  │
+│                 + <=============> +                 │
+│     Balance     │                 │     Balance     │
++-----------------+                 +-----------------+
+```
+
+#### The "view-key"
 
 In Crypto.com Chain, transactions are encrypted, and it can only be viewed by the owner of the view key. It is important that in order for the receiver to spend the funds, they would need to be able to view the transaction details and obtain the corresponding UTXO data. Therefore, the receiver's view key is one of the essential components when launching a transaction.
 
 - For example, we can use the `view-key` command to obtain the view-key of `Default` wallet and `Bob` wallet:
 
-    ```bash
-    $ ./target/debug/client-cli view-key --name Default
-    Enter authentication token:       # Input the Authentication token of Default
-    View Key: 02b4dabfc862b9cb9f86b8d49520023aa0cccb2ad89446577dd0fee7bc946a79a1
+  ```bash
+  $ ./target/debug/client-cli view-key --name Default
+  Enter authentication token:       # Input the Authentication token of Default
+  View Key: 02b4dabfc862b9cb9f86b8d49520023aa0cccb2ad89446577dd0fee7bc946a79a1
 
-    $ ./target/debug/client-cli view-key --name Bob
-    Enter authentication token:       # Input the Authentication token of Bob
-    View Key: 03ef78b2751d43c3309b6ac68641e56528a23dc5678a201e43a7ed852511a1c276
-    ```
+  $ ./target/debug/client-cli view-key --name Bob
+  Enter authentication token:       # Input the Authentication token of Bob
+  View Key: 03ef78b2751d43c3309b6ac68641e56528a23dc5678a201e43a7ed852511a1c276
+  ```
 
 ::: tip Tip
 
@@ -196,29 +253,30 @@ Sender could associate one or more `view-keys` onto the transactions. The view-k
 For more information, you could refer to [Transaction Accounting Model](./transaction-accounting-model).
 
 :::
+#### `Transfer` type transaction: Transferring tokens
 
-- Create Transfer address, which is a Transfer address, of `Bob` wallet:
+- In `Bob` wallet, create a *Transfer* address for receiving funds: 
 
-    ```bash
-    $ ./target/debug/client-cli address new --name Bob --type Transfer
-    Enter authentication token:       # Input the Authentication token of Bob
-    New address: dcro135w20p56vdduzv5e4v4g2a9ucu6vw9k25aeyd7jfxuej66l4af9s7ycz35
-    ```
+  ```bash
+  $ ./target/debug/client-cli address new --name Bob --type Transfer
+  Enter authentication token:       # Input the Authentication token of Bob
+  New address: dcro135w20p56vdduzv5e4v4g2a9ucu6vw9k25aeyd7jfxuej66l4af9s7ycz35
+  ```
 
 - Then, you can transfer your tokens to Bob by:
 
-    ```bash
-    $ ./target/debug/client-cli transaction new --name Default --type Transfer
+  ```bash
+  $ ./target/debug/client-cli transaction new --name Default --type Transfer
 
-    Enter authentication token:       # Input the Authentication token of Default
-    Enter output address: dcro135w20p56vdduzv5e4v4g2a9ucu6vw9k25aeyd7jfxuej66l4af9s7ycz35
-    Enter amount (in CRO): 12345678   # CRO token amount you will transfer to Bob
-    Enter timelock (seconds from UNIX epoch) (leave blank if output is not time locked):    # Leave blank
-    More outputs? [yN]
-    Enter view keys (comma separated) (leave blank if you don't want any additional view keys in transaction):
-    02b4dabfc862b9cb9f86b8d49520023aa0cccb2ad89446577dd0fee7bc946a79a1,03ef78b2751d43c3309b6ac68641e56528a23dc5678a201e43a7ed852511a1c276
-    Transaction successfully created!
-    ```
+  Enter authentication token:       # Input the Authentication token of Default
+  Enter output address: dcro135w20p56vdduzv5e4v4g2a9ucu6vw9k25aeyd7jfxuej66l4af9s7ycz35
+  Enter amount (in CRO): 12345678   # CRO token amount you will transfer to Bob
+  Enter timelock (seconds from UNIX epoch) (leave blank if output is not time locked):    # Leave blank
+  More outputs? [yN]
+  Enter view keys (comma separated) (leave blank if you don't want any additional view keys in transaction):
+  02b4dabfc862b9cb9f86b8d49520023aa0cccb2ad89446577dd0fee7bc946a79a1,03ef78b2751d43c3309b6ac68641e56528a23dc5678a201e43a7ed852511a1c276
+  Transaction successfully created!
+  ```
 
 ::: tip Tip
 
