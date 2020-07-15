@@ -22,7 +22,7 @@ If your development machine does not support SGX, we recommend spinning up a clo
 
 ## A bird's-eye view
 
-Before diving into details, we would like to introduce you the big picture of Crypto.com Chain's main components as following:
+Before diving into details, we would like to introduce you the big picture of Crypto.com Chain's main components as follows:
 
 ![](./assets/big_pic.png)
 
@@ -35,13 +35,13 @@ At the end of this getting-start document, you will be running four components:
 
 ## Azure Account Creation
 
-You will first need to create an [Microsoft Azure](https://azure.microsoft.com/) account with a `pay-as-you-go` subscription. This will require providing your credit card information to `Microsoft Azure` and you may be subject to charges when you create a virtual machines.
+You will first need to create an [Microsoft Azure](https://azure.microsoft.com/) account with a `pay-as-you-go` subscription. This will require providing your credit card information to `Microsoft Azure` and you may be subject to charges when you create a virtual machine.
 
 Please read `Microsoft Azure` free trial introduction to see if you are eligible for the free-tier.
 
 ## Create your SSH key
 
-To access your remote Azure VM later, you will first need to create a SSH key in your local computer. You can follow the steps [here](https://docs.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent).
+To access your remote Azure VM later, you will first need to create an SSH key in your local computer. You can follow the steps [here](https://docs.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent).
 
 ## Azure VM creation
 
@@ -66,7 +66,7 @@ To access your remote Azure VM later, you will first need to create a SSH key in
     $ ssh ubuntu@{Azure VM Public IP Address}
     ```
 
-2. Install `Docker`: you can refer to following document on ["How To Install and Use Docker on Ubuntu 18.04"
+2. Install `Docker`: you can refer to the following document on ["How To Install and Use Docker on Ubuntu 18.04"
   ](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04)
 
     Make sure you have complete the part of `Executing the Docker Command Without Sudo` by:
@@ -129,7 +129,7 @@ In short, you should go to [Intel® SGX Services](https://api.portal.trustedserv
 to sign up for the ID and KEY. It won't take you more than 5 minutes.
 
 1. Sign up/Sign in to [Intel® SGX Services](https://api.portal.trustedservices.intel.com)
-2. Enroll in [Intel® SGX Attestation Service](https://api.portal.trustedservices.intel.com/EPID-attestation) by subscribe to the product ["DEV Intel® Software Guard Extensions Attestation Service (Unlinkable)"](https://api.portal.trustedservices.intel.com/Products/dev-intel-software-guard-extensions-attestation-service-unlinkable).
+2. Enroll in [Intel® SGX Attestation Service](https://api.portal.trustedservices.intel.com/EPID-attestation) by subscribing to the product ["DEV Intel® Software Guard Extensions Attestation Service (Unlinkable)"](https://api.portal.trustedservices.intel.com/Products/dev-intel-software-guard-extensions-attestation-service-unlinkable).
 3. Go to [Manage Subscriptions page](https://api.portal.trustedservices.intel.com/developer), your `SPID` and `Primary key` will be shown on the portal as below:
 
     ![](./assets/intel_sub.png)

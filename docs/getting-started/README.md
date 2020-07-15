@@ -23,7 +23,7 @@ If your development machine does not support SGX, we recommend spinning up a clo
 
 ## A bird's-eye view
 
-Before diving into details, we would like to introduce you the big picture of Crypto.com Chain's main components as following:
+Before diving into details, we would like to introduce you the big picture of Crypto.com Chain's main components as follows:
 
 ![](./assets/big_pic.png)
 
@@ -51,7 +51,7 @@ them as default.
 
 SSH to the Azure VM, and start the environment setup for Crypto.com Chain.
 
-- Install `Docker`: you can refer to following document on ["How To Install and Use Docker on Ubuntu 18.04"
+- Install `Docker`: you can refer to the following document on ["How To Install and Use Docker on Ubuntu 18.04"
   ](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04)
 
 Make sure you have complete the part of `Executing the Docker Command Without Sudo` by:

@@ -3,7 +3,7 @@
 ::: warning Caution
 This page is a continuation of running a local chain node of [Getting Started](./) for development.
 
-For anyone interested more on wallet management, getting testing token from the faucet and sending transaction,
+For anyone interested more on wallet management, getting testing token from the faucet and sending transactions,
 please refer to [ClientCLI](../wallets/client-cli).
 :::
 
@@ -16,9 +16,9 @@ Specifically, the blockchain begins with this [genesis file](https://github.com/
 - Restore the wallet with the default [mnemonics](https://github.com/crypto-com/chain/blob/master/docker/config/devnet/tendermint/mnemonics.txt#L1);
 - Obtain the allocated funds and perform transactions.
 
-#### Prerequest:
+### Pre-requisites:
 
-To start using the wallet, we have to configure the environment with the node information:
+To start using the wallet with the client-cli, we have to configure the environment with the node information:
 
 ```
 $ export CRYPTO_CHAIN_ID=test-chain-y3m1e6-AB
@@ -145,7 +145,7 @@ $ export CRYPTO_GENESIS_FINGERPRINT=934B7A20886EE47EC495AFFBF305809D5F4E9CDA6E41
     Synchronization complete!
     ```
 
-- You can now check your `balance`. Noted that the `Avaiable` only includes the transferable balance and the bonded/unbonded amount are not included:
+- You can now check your `balance`. Noted that the `Available` only includes the transferable balance and the bonded/unbonded amount are not included:
 
     ```bash
     $ ./target/debug/client-cli balance --name Default
@@ -159,11 +159,11 @@ $ export CRYPTO_GENESIS_FINGERPRINT=934B7A20886EE47EC495AFFBF305809D5F4E9CDA6E41
     +-----------+---------------------+
     ```
 
-Congratulations! You have successfully withdraw all the unbonded genesis fund and now we will be able to transfer the test tokens to the others.
+Congratulations! You have successfully withdrawn all the unbonded genesis fund and now we will be able to transfer the test tokens to the others.
 
 ## Transfer CRO to another address
 
-- First you can create another wallet with the name `Bob`, or whatever name you like. The wallet type could be `hd` (Hierarchical Deterministic) or `basic`:
+- First, you can create another wallet with the name `Bob`, or whatever name you like. The wallet type could be `hd` (Hierarchical Deterministic) or `basic`:
 
     ```bash
     $ ./target/debug/client-cli wallet new --name Bob --type hd
