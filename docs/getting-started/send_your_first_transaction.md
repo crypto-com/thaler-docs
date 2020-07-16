@@ -23,7 +23,7 @@ To start using the wallet with the client-cli, we have to configure the environm
 ```
 $ export CRYPTO_CHAIN_ID=test-chain-y3m1e6-AB
 $ export CRYPTO_CLIENT_TENDERMINT=ws://127.0.0.1:26657/websocket
-$ export CRYPTO_GENESIS_FINGERPRINT=934B7A20886EE47EC495AFFBF305809D5F4E9CDA6E41AECB0B10FABA74A922DC
+$ export CRYPTO_GENESIS_FINGERPRINT=8DC8F782F15A6481E4485D146A1ED2E005A7A6BE183BE06204EA0F0C55671F02
 ```
 
 If you are running your wallet on the same Azure machine, you can use the above configuration. If you are running the wallet on your local machine, you will have to change the `ws://127.0.0.1:26657/websocket` with the Azure instance public IP address.
@@ -124,13 +124,13 @@ Once we have a restore wallet, we are now ready to create new addresses for perf
 ```bash
 $ ./target/debug/client-cli sync --name Default --disable-fast-forward
 Enter authentication token:
-Error: Verify error: genesis-fingerprint from tendermint 934B7A20886EE47EC495AFFBF305809D5F4E9CDA6E41AECB0B10FABA74A922DC does not match preset genesis-fingerprint DC05002AAEAB58DA40701073A76A018C9AB02C87BD89ADCB6EE7FE5B419526C8
+Error: Verify error: genesis-fingerprint from tendermint 8DC8F782F15A6481E4485D146A1ED2E005A7A6BE183BE06204EA0F0C55671F02 does not match preset genesis-fingerprint DC05002AAEAB58DA40701073A76A018C9AB02C87BD89ADCB6EE7FE5B419526C8
 ```
 
 Make sure you have exported the fingerprint manually
 
 ```bash
-$ export CRYPTO_GENESIS_FINGERPRINT=934B7A20886EE47EC495AFFBF305809D5F4E9CDA6E41AECB0B10FABA74A922DC
+$ export CRYPTO_GENESIS_FINGERPRINT=8DC8F782F15A6481E4485D146A1ED2E005A7A6BE183BE06204EA0F0C55671F02
 ```
 
 :::
