@@ -4,12 +4,12 @@ Thanks for you interest in Crypto.com Chain. This is the technical documentation
 
 ### What's next?
 
-- ### Try Running a Node
-  - [Join Thaler Testnet](./thaler-testnet): Try running Full Nodes or Council Nodes (Validators) connected to our Thaler Testnet.
-  - [Build Latest Development Version](./local-devnet): Try running latest development network (Devnet)
+#### Try Running a Node
+- [Join Thaler Testnet](./thaler-testnet): Try running Full Nodes or Council Nodes (Validators) connected to our Thaler Testnet.
+- [Build Latest Development Version](./local-devnet): Try running latest development network (Devnet)
 
-- ### Learn about protocol design
-  - Read our [Protocol Design](/protocol/)
+#### Learn about protocol design
+- Read our [Protocol Design](/protocol/)
 
-- ### Wallet Management
-  - [Overview](/wallets/)
+#### Wallet Management
+- [Overview](/wallets/)

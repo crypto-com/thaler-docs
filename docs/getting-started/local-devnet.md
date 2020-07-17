@@ -1,4 +1,4 @@
-# Devnet: Running Latest Development Node (Microsoft Azure only)
+# Devnet: Running Latest Development Node
 
 ::: warning caution
 this page is for building and running the latest development version of the chain for testing purpose only. development branch is under active development and is highly unstable and subject to breaking changes. you should expect a moderate amount of troubleshooting work is required.
