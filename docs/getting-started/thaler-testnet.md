@@ -4,14 +4,20 @@ The Crypto.com Chain Testnet has been named as **“Thaler”**.
 
 This is an early tutorial for the developers and brave and patient super-early adopters.
 
-## What do I need?
+## Pre-requisites
 
-Crypto.com chain utilizes the technology of `Intel® Software Guard Extensions (Intel® SGX)`
+#### Intel® Software Guard Extensions (Intel® SGX)
+
+Because we utilize the technology of `Intel® Software Guard Extensions (Intel® SGX)`
 for [payment data confidentiality](../protocol/transaction-privacy.md#motivation), the pre-requisites are a little more strict than the other
 chains' setup. A special type of hardware is needed and the reference of [SGX-hardware](https://github.com/ayeks/SGX-hardware)
 could help you identify if your current hardware supports `Intel® SGX` or not.
 
-If your development machine does not support SGX, we recommend spinning up a cloud instance listed in the [above reference](https://github.com/ayeks/SGX-hardware#cloud-vendors). In this guide, we will walk through the process of setting it up on [Azure Confidential Compute VM](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/microsoft-azure-compute.acc-virtual-machine-v2?tab=overview).
+If your development machine does not support SGX, we recommend spinning up a cloud instance listed in the [this reference](https://github.com/ayeks/SGX-hardware#cloud-vendors). In this guide, we will walk through the process of setting it up on [Azure Confidential Compute VM](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/microsoft-azure-compute.acc-virtual-machine-v2?tab=overview).
+
+#### Supported OS
+
+We officially support Linux only. Other platforms may work buy there is no guarantee. We will extend our support to other platforms after we have stablized our current architecture.
 
 ## Prepare your machine
 
