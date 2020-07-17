@@ -17,7 +17,7 @@ You can look for your Intel CPU model on the [Intel Product Specifications websi
 - 4GB RAM
 - 100GB storage space
 
-::: tip NOTE
+::: tip Microsoft Azure
 If you are using Microsoft Azure, you will need to create an instance of [Azure Confidential Computing (login required)](https://portal.azure.com/#create/microsoft-azure-compute.acc-virtual-machine-v2acc-virtual-machine-v2) with the above hardware requirement.
 
 You will also need to create an extra disk in the Azure panel and mount it to the created instance. Instructions can be found [here](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/attach-disk-portal).
@@ -48,10 +48,10 @@ If you are running on Azure Confidential Computing machines, you will only need 
 
 ### Step 0-1. Install aesmd service
 
-- After you have installed Intel SGX PSW 2.9 using the [installation guide](https://download.01.org/intel-sgx/sgx-linux/2.9.1/docs/Intel_SGX_Installation_Guide_Linux_2.9.1_Open_Source.pdf) from [step 0-0](#step-0-0-install-intel-sgx-2-9), run the following command to install aesm service:
+After you have installed Intel SGX PSW 2.9 using the [installation guide](https://download.01.org/intel-sgx/sgx-linux/2.9.1/docs/Intel_SGX_Installation_Guide_Linux_2.9.1_Open_Source.pdf) from [step 0-0](#step-0-0-install-intel-sgx-2-9), run the following command to install aesm service:
 
 ```bash
-sudo apt install libsgx-uae-service
+$ sudo apt install libsgx-uae-service
 ```
 
 ### Step 0-2. Install ZeroMQ
@@ -59,10 +59,10 @@ sudo apt install libsgx-uae-service
 You may also need to install libzmq (e.g. [libzmq3-dev](https://packages.ubuntu.com/xenial/libzmq3-dev) package in Ubuntu 18.04).
 
 ```bash
-sudo apt install libzmq3-dev 
+$ sudo apt install libzmq3-dev 
 ```
 
-### Step 1. Get Tendermint and Chain v0.5.2 released binaries
+### Step 1. Get Tendermint and Chain v0.5.3 released binaries
 
 Download the latest version of [Tendermint 0.33.\*](https://docs.tendermint.com/master/introduction/install.html#from-binary).
 Chain v0.5.2 can be [downloaded from GitHub](https://github.com/crypto-com/chain/releases/download/v0.5.2/crypto-com-chain-release-0.5.2.tar.gz).
@@ -71,8 +71,23 @@ Chain v0.5.2 can be [downloaded from GitHub](https://github.com/crypto-com/chain
 Crypto.com Chain v0.5 is not backwards compatible with v0.3 nor v0.4 released earlier. So, if you were running a node with the old
 version of Crypto.com Chain, you will have to delete all the associated data.
 
-Also, please note the [released binary changes](https://github.com/crypto-com/chain/releases/tag/v0.5.2).
+Also, please note the [released binary changes](https://github.com/crypto-com/chain/releases/tag/v0.5.3).
 :::
+
+- To install Tendermint v0.33.6 on Linux based machine:
+  ```bash
+  $ sudo apt update
+  $ sudo apt install -y unzip
+  $ curl -LOJ https://github.com/tendermint/tendermint/releases/download/v0.33.6/tendermint_v0.33.6_linux_amd64.zip
+  $ unzip tendermint_v0.33.6_linux_amd64.zip
+  ```
+  Note: Replace `https://github.com/tendermint/tendermint/releases/download/v0.33.6/tendermint_v0.33.6_linux_amd64.zip` to your desired version GitHub release link
+
+- To install Chain released binaries:
+  ```bash
+  $ curl -LOJ https://github.com/crypto-com/chain/releases/download/v0.5.3/crypto-com-chain-release-0.5.3.tar.gz
+  $ tar -zxvf crypto-com-chain-release-0.5.3.tar.gz
+  ```
 
 ### Step 2. Configure Tendermint
 
@@ -84,23 +99,28 @@ Depending your Tendermint home setting, the Tendermint configuration will be ini
 
 - In `~/.tendermint/config/`, change the content of `genesis.json` by:
 
-  ```
+  ```bash
   $ curl https://raw.githubusercontent.com/crypto-com/chain-docs/master/docs/getting-started/assets/genesis_file/v0.5/genesis.json > ~/.tendermint/config/genesis.json
   ```
-  verify MD5 checksum
-  ```
-  $ md5 ~/.tendermint/config/genesis.json
-  MD5 (~/.tendermint/config/genesis.json) = 41fc1bcb5c1e3279e2d338a8eaed3bd5
+
+- verify MD5 checksum of the downloaded `genesis.json`. You should see `OK!` if the MD5 checksum matches.
+  ```bash
+  $ if [[ $(md5sum genesis.json | awk '{print $1}') == "1c518490f523153f5a644d47deb1a3c1" ]]; then
+    echo "OK!"
+  else
+    echo "MISMATCHED!"
+  fi
+  OK!
   ```
 
 - For network configuration, in `~/.tendermint/config/config.toml`, you can put the following as `seeds` and `create_empty_blocks_interval`:
 
-  ```
-  seeds = "f3806de90c43f5474c6de2b5edefb81b9011f51f@52.186.66.214:26656,29fab3b66ee6d9a46a4ad0cc1b061fbf02024354@13.71.189.105:26656,2ab2acc873250dccc3eb5f6eb5bd003fe5e0caa7@51.145.98.33:26656"
+  ```bash
+  $ sed -i '/seeds = /c\seeds = "f3806de90c43f5474c6de2b5edefb81b9011f51f@52.186.66.214:26656,29fab3b66ee6d9a46a4ad0cc1b061fbf02024354@13.71.189.105:26656,2ab2acc873250dccc3eb5f6eb5bd003fe5e0caa7@51.145.98.33:26656"' ~/.tendermint/config/config.toml
   ```
 
-  ```
-  create_empty_blocks_interval = "60s"
+  ```bash
+  $ sed -i '/create_empty_blocks_interval = /c\create_empty_blocks_interval = "60s"' ~/.tendermint/config/config.toml
   ```
 
 ::: tip NOTE
@@ -115,7 +135,7 @@ Before we move forward:
 
 - Make sure `aesmd` service is running by
 
-  ```
+  ```bash
   ## check whether aesm service is on
   $ ps ax | grep aesm
   ## check whether driver is on
@@ -148,19 +168,19 @@ Once you obtained the credentials in the portal, you can check the "*Subscriptio
 
 - Start the tx-query enclave app (in `tx-query-HW-debug/`), e.g.:
 
-  ```
+  ```bash
   $ RUST_LOG=info ./tx-query-app 0.0.0.0:3322 ipc://$HOME/enclave.socket
   ```
 
 - Start chain-abci, e.g.:
 
-  ```
+  ```bash
   $ RUST_LOG=info ./chain-abci --chain_id testnet-thaler-crypto-com-chain-42 --genesis_app_hash F62DDB49D7EB8ED0883C735A0FB7DE7F2A3FA322FCD2AA832F452A62B38607D5 --enclave_server ipc://$HOME/enclave.socket --tx_query <EXTERNAL_IP/HOSTNAME>:3322
   ```
 
 - Finally, start Tendermint:
 
-  ```
+  ```bash
   $ ./tendermint node
   ```
 
@@ -237,13 +257,13 @@ please see [production deployment notes](notes-on-production-deployment.md) on h
 
 - Start chain-abci, e.g.:
 
-  ```
+  ```bash
   $ RUST_LOG=info ./chain-abci --chain_id testnet-thaler-crypto-com-chain-42 --genesis_app_hash F62DDB49D7EB8ED0883C735A0FB7DE7F2A3FA322FCD2AA832F452A62B38607D5
   ```
 
 - Finally, start Tendermint:
 
-  ```
+  ```bash
   $ ./tendermint node
   ```
 
