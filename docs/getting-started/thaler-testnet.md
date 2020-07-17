@@ -124,7 +124,7 @@ Also, please note the [released binary changes](https://github.com/crypto-com/ch
 Depending your Tendermint home setting, the Tendermint configuration will be initialized to that home directory. To simply the following steps, we will use the default Tendermint home directory `~/.tendermint/` for illustration.
 :::
 
-- In `~/.tendermint/config/`, change the content of `genesis.json` by:
+- In `~/.tendermint/config/`, download Thaler Testnet `genesis.json` by:
 
   ```bash
   $ curl https://raw.githubusercontent.com/crypto-com/chain-docs/master/docs/getting-started/assets/genesis_file/v0.5/genesis.json > ~/.tendermint/config/genesis.json
@@ -132,11 +132,7 @@ Depending your Tendermint home setting, the Tendermint configuration will be ini
 
 - verify MD5 checksum of the downloaded `genesis.json`. You should see `OK!` if the MD5 checksum matches.
   ```bash
-  $ if [[ $(md5sum genesis.json | awk '{print $1}') == "1c518490f523153f5a644d47deb1a3c1" ]]; then
-    echo "OK!"
-  else
-    echo "MISMATCHED!"
-  fi
+  $ [ $(md5sum genesis.json | awk '{print $1}') = "1c518490f523153f5a644d47deb1a3c1" ] && echo "OK!" || echo "MISMATCHED"
   OK!
   ```
 
