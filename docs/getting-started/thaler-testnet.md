@@ -40,7 +40,7 @@ You will also need to create an extra disk in the Azure panel and mount it to th
 
 ## Common Setup
 
-### Step 0. Install Intel SGX 2.9 and other pre-requisites
+### Step 1. Install Intel SGX 2.9 and other pre-requisites
 
 - Make sure your CPU supports SGX, and it is enabled in BIOS. [This GitHub repository](https://github.com/ayeks/SGX-hardware) has more information about supported hardware and cloud vendors.
 
@@ -51,7 +51,7 @@ has Intel PSW and other dependencies pre-installed
 expose it to the container by running docker with the `--device /dev/isgx` flag).
 :::
 
-### Step 0-0. Install Intel SGX 2.9
+### Step 1-0. Install Intel SGX 2.9
 
 ::: tip Note
 If you are running on Azure Confidential Computing machines, you will only need to install the Intel SGX PSW 2.9 and aesmd service.
@@ -61,7 +61,7 @@ If you are running on Azure Confidential Computing machines, you will only need 
 
 - Note that some motherboards may have only "software controlled" option where [an extra step is needed for enabling it](https://github.com/intel/linux-sgx/issues/354#issuecomment-447961815).
 
-### Step 0-1. Install aesmd service
+### Step 1-1. Install aesmd service
 
 After you have installed Intel SGX PSW 2.9 using the [installation guide](https://download.01.org/intel-sgx/sgx-linux/2.9.1/docs/Intel_SGX_Installation_Guide_Linux_2.9.1_Open_Source.pdf) from [step 0-0](#step-0-0-install-intel-sgx-2-9), run the following command to install aesm service:
 
@@ -78,7 +78,7 @@ $ sudo apt-get install libssl-dev libcurl4-openssl-dev libprotobuf-dev
 ```
 :::
 
-### Step 0-2. Install ZeroMQ
+### Step 1-2. Install ZeroMQ
 
 You may also need to install libzmq (e.g. [libzmq3-dev](https://packages.ubuntu.com/xenial/libzmq3-dev) package in Ubuntu 18.04).
 
@@ -86,7 +86,7 @@ You may also need to install libzmq (e.g. [libzmq3-dev](https://packages.ubuntu.
 $ sudo apt install libzmq3-dev 
 ```
 
-### Step 1. Get Tendermint and Chain v0.5.3 released binaries
+### Step 2. Get Tendermint and Chain v0.5.3 released binaries
 
 Download the latest version of [Tendermint 0.33.\*](https://github.com/tendermint/tendermint/releases).
 Chain v0.5.* can be [downloaded from GitHub](https://github.com/crypto-com/chain/releases).
@@ -113,7 +113,7 @@ Also, please note the [released binary changes](https://github.com/crypto-com/ch
   $ tar -zxvf crypto-com-chain-release-0.5.3.tar.gz
   ```
 
-### Step 2. Configure Tendermint
+### Step 3. Configure Tendermint
 
 - After placing all binaries on the path. You can initialize Tendermint with:
   ```bash
@@ -156,7 +156,7 @@ This page only shows the minimal setup.
 Depending on what you wish to test on the testnet, e.g. monitoring, you can refer to the [Tendermint documentation](https://docs.tendermint.com/master/tendermint-core/configuration.html) for more details.
 :::
 
-### Step 3. Run everything
+### Step 4. Run everything
 
 Before we move forward:
 
@@ -182,7 +182,7 @@ You may want to disable unsafe operations in Tendermint configuration,
 restrict the incoming connections RPC connections (e.g. over NGINX or equivalent), want to execute the processes using supervisor or equivalent etc.
 :::
 
-### Step 3-a-1. Obtain and set the service provider credentials for development
+### Step 4-A-1. Obtain and set the service provider credentials for development
 
 On the [Intel's developer portal](https://api.portal.trustedservices.intel.com/EPID-attestation), you can sign up for an *Intel® Developer Zone* account; under *Development Access*, you can obtain credentials for the non-production *DEV Intel® Software Guard Extensions Attestation Service*  and choose _"unlinkable quotes"_.
 
@@ -191,7 +191,7 @@ Once you obtained the credentials in the portal, you can check the "*Subscriptio
 - `SPID`: Set it to the "Service Provider ID (SPID)" value from the portal;
 - `IAS_API_KEY`: Set it to the primary or secondary API key from the portal.
 
-### Step 3-a-2. Run everything
+### Step 4-A-2. Run everything
 
 - Start the tx-query enclave app (in `tx-query-HW-debug/`), e.g.:
 
@@ -221,7 +221,7 @@ as sentries (see [Tendermint](https://docs.tendermint.com/master/tendermint-core
 test secure storage of validator keys etc.
 :::
 
-### Step 3-b. Pre-requisites
+### Step 4-B. Pre-requisites
 
 In the following example, we will use the client-cli command-line tool to perform the address creation and join as a council node. To follow the steps, you need to first set the required environment variables:
 
@@ -234,7 +234,7 @@ If you would like to connect to a local full node, you can put `<YOUR_FULL_NODE_
 `<YOUR_FULL_NODE_WS_ADDRESS>=ws://13.90.34.32:26657/websocket`.
 :::
 
-### Step 3-b-0. (Optional) restoring a wallet
+### Step 4-B-1 (Optional) restoring a wallet
 
 If you have participated in the v0.3.1 testnet and have backed up your seed phrase, you can restore it with the [client-cli](../wallets/client-cli.md#wallet-restore-restore-an-hd-wallet), for example:
 
@@ -250,7 +250,7 @@ $ ./client-cli address new --name <WALLET_NAME> --type Staking
 
 If the created address matches one of the ones listed in the initial _genesis.json_ distribution, you can skip to [Step 3-b-3](#step-3-b-3-create-a-validator-key-pair).
 
-### Step 3-b-1. Create a new wallet with staking address
+### Step 4-B-2. Create a new wallet with staking address
 
 ::: tip Note
 If you have restored your wallet and created a staking address in step 3-b-0, you can skip this step.
@@ -265,12 +265,12 @@ $ ./client-cli address new --name <WALLET_NAME> --type Staking
 
 You should obtain a hexadecimal-encoded address, e.g. `0xa861a0869c02ab8b74c7cb4f450bcbeb1e472b9a`
 
-### Step 3-b-2. Obtain the minimal required stake
+### Step 4-B-3. Obtain the minimal required stake
 
 Unless you have obtained the CRO testnet token before, simply send a message on [Gitter](https://gitter.im/crypto-com/community),
 stating who you are and your staking address (@devashishdxt or @lezzokafka would typically reply within a day).
 
-### Step 3-b-3. Create a validator key pair
+### Step 4-B-4. Create a validator key pair
 
 - In a development mode, the full key pair is located in the `~/.tendertmint/config/priv_validator_key.json` ;
 
@@ -282,7 +282,7 @@ If you plan to test a production setting with the Tendermint Key Management Syst
 please see [production deployment notes](notes-on-production-deployment.md) on how it can be converted at the current (0.7) version.
 :::
 
-### Step 3-b-4. Run everything
+### Step 4-B-5. Run everything
 
 - Start chain-abci, e.g.:
 
@@ -296,7 +296,7 @@ please see [production deployment notes](notes-on-production-deployment.md) on h
   $ ./tendermint node
   ```
 
-### Step 3-b-5. Send a council node join request transaction
+### Step 4-B-6. Send a council node join request transaction
 
 As in Step 3-b-1, this can be done, for example, with `client-cli` with the required environment variables.
 
