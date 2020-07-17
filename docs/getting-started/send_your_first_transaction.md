@@ -11,7 +11,7 @@ Crypto.com Chain uses a hybrid transaction accounting model with different trans
 
 ![](./assets/states.png)
 
-Specifically, the blockchain begins with this [genesis file](https://github.com/crypto-com/chain/blob/master/docker/config/devnet/tendermint/genesis.json), which you can [see that](https://github.com/crypto-com/chain/blob/master/docker/config/devnet/tendermint/genesis.json#L20-L22) funds has already been distributed to some addresses at the beginning. In this documentation, we will
+Specifically, the blockchain begins with this [genesis file](https://github.com/crypto-com/chain/blob/master/docker/config/devnet/tendermint/genesis.json), which you can [see that](https://github.com/crypto-com/chain/blob/master/docker/config/devnet/tendermint/genesis.json#L20-L22) funds have already been distributed to some addresses at the beginning. In this documentation, we will
 
 - Restore the wallet with the default [mnemonics](https://github.com/crypto-com/chain/blob/master/docker/config/devnet/tendermint/mnemonics.txt#L1);
 - Obtain the allocated funds and perform transactions.
@@ -117,7 +117,7 @@ Once we have a restore wallet, we are now ready to create new addresses for perf
   +-----------------+----------------------------+
   ```
 
-  As in the above example, you can see that there are `5000000000 CRO` test token in the _staking_ address that is `Unbonded` and ready to go.
+  As in the above example, you can see that there are `5000000000 CRO` test tokens in the _staking_ address that is `Unbonded` and ready to go.
 
 ::: tip Note: If you encounter a fingerprint mismatched error
 
@@ -167,7 +167,7 @@ We will cover the `Withdraw` type type in this section. For for further details 
 
 #### `Withdraw` type transaction: Withdraw the unbonded funds
 
-- We are now ready to move the genesis funds from the _staking_ address `0x2d..38ea8`. To do this, we will perform a `Withdraw` type transaction that withdraw the funds from the _staking_ address `Unbonded` balance to the transfer address `dcro1k...dlmgd` we have just created.
+- We are now ready to move the genesis funds from the _staking_ address `0x2d..38ea8`. To do this, we will perform a `Withdraw` type transaction that withdraws the funds from the _staking_ address `Unbonded` balance to the transfer address `dcro1k...dlmgd` we have just created.
 
 ```bash
 $ ./target/debug/client-cli transaction new --name Default --type Withdraw

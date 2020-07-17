@@ -1,20 +1,18 @@
 # Getting Started
 
-::: warning Caution
-This page is for the development environment set up only, and it is subject to changes.
+::: warning caution
+This page is for building and running the latest development version of the chain for testing purpose only. Please note that the development branch is under active development and is highly unstable and subject to breaking changes. Thus, a moderate amount of troubleshooting work is expected and required.
 
-For anyone interested in joining the Crypto.com chain testnet,
+for anyone interested in joining the crypto.com chain testnet,
 please refer to our [testnet documentation](./thaler-testnet).
 :::
 
-By following this tutorial, you can compile and run the latest version of Crypto.com Chain from scratch.
-With supported hardware, you can run the chain locally within a cup of coffee ☕. However, this document aims
-to provide you with a step-by-step guide to run Crypto.com Chain locally and not a guide for
-production usage.
+By following this tutorial, you can compile and run the latest development version of Crypto.com Chain from scratch. It is intended for testing purpose only.
+With supported hardware, you can run the chain locally within a cup of coffee ☕. Please note that this document aims to provide you with a step-by-step guide to run Crypto.com Chain locally and not a guide for production usage.
 
 ## Pre-requisites
 
-Because we utilize the technology of `Intel® Software Guard Extensions (Intel® SGX)`
+Crypto.com chain utilizes the technology of `Intel® Software Guard Extensions (Intel® SGX)`
 for [payment data confidentiality](./transaction-privacy.md#motivation), the pre-requisites are a little more strict than the other
 chains' setup. A special type of hardware is needed and the reference of [SGX-hardware](https://github.com/ayeks/SGX-hardware)
 could help you identify if your current hardware supports `Intel® SGX` or not.
@@ -23,15 +21,15 @@ If your development machine does not support SGX, we recommend spinning up a clo
 
 ## A bird's-eye view
 
-Before diving into details, we would like to introduce you the big picture of Crypto.com Chain's main components as follows:
+Before diving into the details, we would like to introduce you to the big picture of Crypto.com Chain's main components:
 
 ![](./assets/big_pic.png)
 
-At the end of this getting-start document, you will be running four components:
+At the end of this getting-started document, you will be running these four components:
 
-- `chain-abci` as main chain process.
-- `client-rpc` as rpc server for client's interactions.
-- `tendermint` for consensus.
+- `chain-abci` as main chain process;
+- `client-rpc` as rpc server for client's interactions;
+- `tendermint` for consensus;
 - `tx-query-app` allows semi-trusted client querying of sealed tx payloads.
 
 ## Azure VM creation
