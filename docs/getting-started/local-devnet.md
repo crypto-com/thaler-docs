@@ -1,9 +1,9 @@
 # Devnet: Running Latest Development Node (Microsoft Azure only)
 
-::: warning Caution
-This page is for building and running the latest development version of the chain for testing purpose only. Development branch is under active development and is highly unstable and subject to breaking changes. You should expect a moderate amount of troubleshooting work is required.
+::: warning caution
+this page is for building and running the latest development version of the chain for testing purpose only. development branch is under active development and is highly unstable and subject to breaking changes. you should expect a moderate amount of troubleshooting work is required.
 
-For anyone interested in joining the Crypto.com chain testnet,
+for anyone interested in joining the crypto.com chain testnet,
 please refer to our [testnet documentation](./thaler-testnet).
 :::
 
@@ -66,7 +66,7 @@ To access your remote Azure VM later, you will first need to create an SSH key i
     $ ssh ubuntu@{Azure VM Public IP Address}
     ```
 
-2. Install `Docker`: you can refer to the following document on ["How To Install and Use Docker on Ubuntu 18.04"
+1. Install `Docker`: you can refer to the following document on ["How To Install and Use Docker on Ubuntu 18.04"
   ](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04)
 
     Make sure you have complete the part of `Executing the Docker Command Without Sudo` by:
@@ -87,11 +87,34 @@ To access your remote Azure VM later, you will first need to create an SSH key i
     $ git clone https://github.com/crypto-com/chain.git
     ```
 
+## Uninstall DCAP SGX Driver
+
+::: tip Azure VM Intel SGX driver
+Starting from July 2020, Azure DCsv2 (Confidential Cloud) instance have been upgraded to use DCAP driver higher than v1.32 which is not compatible with our chain. In this step we will re-install the SGX driver with a compatible one.
+:::
+
+1. Remove existing DCAP driver
+    ```bash
+    $ cd chain
+    $ make rm-dcap-sgx-driver
+    ```
+1. Reboot your VM
+    ```bash
+    $ sudo reboot
+    ```
+1. Your Azure VM will now restart and you will be kicked from the SSH session. Wait for 10 minutes and SSH to your VM again.
+    ```bash
+    $ ssh ubuntu@{Azure VM Public IP Address}
+    ```
+1. Install the compatible SGX drive
+    ```bash
+    $ make install-isgx-driver
+    ```
+
 ## Build binary and Docker images
 
 1. Build the Crypto.com Chain binary files:
     ```bash
-    $ cd chain/
     $ make build
     ```
 
