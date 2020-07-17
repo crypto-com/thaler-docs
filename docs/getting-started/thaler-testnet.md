@@ -225,7 +225,7 @@ as sentries (see [Tendermint](https://docs.tendermint.com/master/tendermint-core
 test secure storage of validator keys etc.
 :::
 
-### Step 3-b. Pre-requisite
+### Step 3-b. Pre-requisites
 
 In the following example, we will use the client-cli command-line tool to perform the address creation and join as a council node. To follow the steps, you need to first set the required environment variables:
 
