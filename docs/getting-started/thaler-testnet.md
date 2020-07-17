@@ -225,15 +225,17 @@ as sentries (see [Tendermint](https://docs.tendermint.com/master/tendermint-core
 test secure storage of validator keys etc.
 :::
 
-### Step 3-b. Pre-requisite
+### Step 3-b. Pre-requisites
 
 In the following example, we will use the client-cli command-line tool to perform the address creation and join as a council node. To follow the steps, you need to first set the required environment variables:
 
-1. `CRYPTO_CHAIN_ID=testnet-thaler-crypto-com-chain-42`;
-1. `CRYPTO_CLIENT_TENDERMINT=<YOUR_FULL_NODE>`.
+```bash
+export CRYPTO_CHAIN_ID=testnet-thaler-crypto-com-chain-42
+export CRYPTO_CLIENT_TENDERMINT=<YOUR_FULL_NODE_WS_ADDRESS>
+```
 ::: tip Note for environment variables setting:
-If you would like to connect to a local full node, you can put `<YOUR_FULL_NODE>=ws://localhost:26657/websocket`, or alternatively, you may use the external full node by setting
-`<YOUR_FULL_NODE>=ws://13.90.34.32:26657/websocket`.
+If you would like to connect to a local full node, you can put `<YOUR_FULL_NODE_WS_ADDRESS>=ws://localhost:26657/websocket`, or alternatively, you may use the external full node by setting
+`<YOUR_FULL_NODE_WS_ADDRESS>=ws://13.90.34.32:26657/websocket`.
 :::
 
 ### Step 3-b-0. (Optional) restoring a wallet

@@ -20,7 +20,7 @@ Specifically, the blockchain begins with this [genesis file](https://github.com/
 
 To start using the wallet with the client-cli, we have to configure the environment with the node information:
 
-```
+```bash
 $ export CRYPTO_CHAIN_ID=test-chain-y3m1e6-AB
 $ export CRYPTO_CLIENT_TENDERMINT=ws://127.0.0.1:26657/websocket
 $ export CRYPTO_GENESIS_FINGERPRINT=8DC8F782F15A6481E4485D146A1ED2E005A7A6BE183BE06204EA0F0C55671F02
