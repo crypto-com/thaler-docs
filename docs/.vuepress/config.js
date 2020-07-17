@@ -12,6 +12,10 @@ module.exports = {
         link: "/getting-started/"
       },
       {
+        text: "Protocol Design",
+        link: "/protocol/consensus"
+      },
+      {
         text: "Thaler Testnet",
         items: [{
             text: "Setup Tutorial",
@@ -55,10 +59,14 @@ module.exports = {
     sidebar: {
       "/getting-started/": [
         "",
-        "local-devnet",
-        "send_your_first_transaction",
         "thaler-testnet",
-        "local_full_node_development",
+        "local-devnet",
+        "send-your-first-transaction",
+        "node-joining",
+        "notes-on-production-deployment",
+        "notes-on-performance"
+      ],
+      "/protocol/": [
         "consensus",
         "genesis",
         "chain-id-and-network-id",
@@ -71,14 +79,16 @@ module.exports = {
         "transaction-privacy",
         "staking",
         "reward-and-punishments",
-        "node-joining",
         "network-parameters",
-        "notes-on-production-deployment",
-        "notes-on-performance",
         "threat-model",
-        "technical_glossary"
+        "technical-glossary"
       ],
-      "/wallets/": ["", "client-cli", "sample-chain-wallet", "client-rpc"]
+      "/wallets/": [
+        "",
+        "client-cli",
+        "sample-chain-wallet",
+        "client-rpc"
+      ]
     },
     displayAllHeaders: true
   },

@@ -20,7 +20,7 @@ could help you identify if your current hardware supports `Intel® SGX` or not.
 
 If your development machine does not support SGX, we recommend spinning up a cloud instance listed in the [this reference](https://github.com/ayeks/SGX-hardware#cloud-vendors). In this guide, we will walk through the process of setting it up on [Azure Confidential Compute VM](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/microsoft-azure-compute.acc-virtual-machine-v2?tab=overview).
 
-## A bird's-eye view
+## Overview
 
 Before diving into details, we would like to introduce you the big picture of Crypto.com Chain's main components as follows:
 
