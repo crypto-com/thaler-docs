@@ -13,7 +13,7 @@ module.exports = {
       },
       {
         text: "Protocol Design",
-        link: "/protocol/consensus"
+        link: "/protocol/enclave-architecture"
       },
       {
         text: "Thaler Testnet",
@@ -62,25 +62,24 @@ module.exports = {
         "thaler-testnet",
         "local-devnet",
         "send-your-first-transaction",
-        "node-joining",
         "notes-on-production-deployment",
         "notes-on-performance"
       ],
       "/protocol/": [
-        "consensus",
+        "enclave-architecture",
+        "transaction-privacy",
         "genesis",
         "chain-id-and-network-id",
+        "consensus",
         "transaction-accounting-model",
         "transaction",
+        "staking",
+        "reward-and-punishments",
         "serialization",
         "signature-schemes",
         "client-flow",
-        "enclave-architecture",
-        "transaction-privacy",
-        "staking",
-        "reward-and-punishments",
-        "network-parameters",
         "threat-model",
+        "network-parameters",
         "technical-glossary"
       ],
       "/wallets/": [

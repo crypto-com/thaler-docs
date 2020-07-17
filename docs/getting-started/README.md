@@ -5,7 +5,7 @@ Thanks for you interest in Crypto.com Chain. This is the technical documentation
 ### What's next?
 
 - ### Try Running a Node
-  - [Try Thaler Testnet](./thaler-testnet): Try running Full Nodes or Council Nodes (Validators) connected to our Thaler Testnet.
+  - [Join Thaler Testnet](./thaler-testnet): Try running Full Nodes or Council Nodes (Validators) connected to our Thaler Testnet.
   - [Build Latest Development Version](./local-devnet): Try running latest development network (Devnet)
 
 - ### Learn about protocol design

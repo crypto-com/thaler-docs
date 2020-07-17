@@ -14,7 +14,7 @@ For the ease of environment setup, we will be using `Microsoft Azure`. With supp
 ## Pre-requisites
 
 Because we utilize the technology of `Intel® Software Guard Extensions (Intel® SGX)`
-for [payment data confidentiality](./transaction-privacy.md#motivation), the pre-requisites are a little more strict than the other
+for [payment data confidentiality](../protocol/transaction-privacy.md#motivation), the pre-requisites are a little more strict than the other
 chains' setup. A special type of hardware is needed and the reference of [SGX-hardware](https://github.com/ayeks/SGX-hardware)
 could help you identify if your current hardware supports `Intel® SGX` or not.
 

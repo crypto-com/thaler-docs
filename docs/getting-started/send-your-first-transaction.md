@@ -250,7 +250,7 @@ In Crypto.com Chain, transactions are encrypted, and it can only be viewed by th
 The following 3 types of transactions: `TransferTx`, `DepositStakeTx` and `WithdrawUnbondedTx`, have some of their payloads obfuscated.
 Sender could associate one or more `view-keys` onto the transactions. The view-key associated wallet could easily sync and view the transaction.
 
-For more information, you could refer to [Transaction Accounting Model](./transaction-accounting-model).
+For more information, you could refer to [Transaction Accounting Model](../protocol/transaction-accounting-model).
 
 :::
 #### `Transfer` type transaction: Transferring tokens
