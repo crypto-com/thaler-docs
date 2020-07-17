@@ -69,6 +69,15 @@ After you have installed Intel SGX PSW 2.9 using the [installation guide](https:
 $ sudo apt install libsgx-uae-service
 ```
 
+::: tip Unable to locate package error
+If you encountered the error `Unable to locate package` during Intel SGX PSW installation, make sure the command you copy is the same as the PDF content.
+
+In particular, when you install the pre-requisites, hyphens (`-`) may be missing in the copied command, i.e. the correct command is:
+```bash
+$ sudo apt-get install libssl-dev libcurl4-openssl-dev libprotobuf-dev
+```
+:::
+
 ### Step 0-2. Install ZeroMQ
 
 You may also need to install libzmq (e.g. [libzmq3-dev](https://packages.ubuntu.com/xenial/libzmq3-dev) package in Ubuntu 18.04).
@@ -79,8 +88,8 @@ $ sudo apt install libzmq3-dev
 
 ### Step 1. Get Tendermint and Chain v0.5.3 released binaries
 
-Download the latest version of [Tendermint 0.33.\*](https://docs.tendermint.com/master/introduction/install.html#from-binary).
-Chain v0.5.2 can be [downloaded from GitHub](https://github.com/crypto-com/chain/releases/download/v0.5.2/crypto-com-chain-release-0.5.2.tar.gz).
+Download the latest version of [Tendermint 0.33.\*](https://github.com/tendermint/tendermint/releases).
+Chain v0.5.* can be [downloaded from GitHub](https://github.com/crypto-com/chain/releases).
 
 ::: warning CAUTION
 Crypto.com Chain v0.5 is not backwards compatible with v0.3 nor v0.4 released earlier. So, if you were running a node with the old
@@ -96,7 +105,7 @@ Also, please note the [released binary changes](https://github.com/crypto-com/ch
   $ curl -LOJ https://github.com/tendermint/tendermint/releases/download/v0.33.6/tendermint_v0.33.6_linux_amd64.zip
   $ unzip tendermint_v0.33.6_linux_amd64.zip
   ```
-  Note: Replace `https://github.com/tendermint/tendermint/releases/download/v0.33.6/tendermint_v0.33.6_linux_amd64.zip` to your desired version GitHub release link
+  Note: Replace `https://github.com/tendermint/tendermint/releases/download/v0.33.6/tendermint_v0.33.6_linux_amd64.zip` to your desired version GitHub release link. Make sure you are downloading 0.33.* but not the other versions.
 
 - To install Chain released binaries:
   ```bash
@@ -106,7 +115,10 @@ Also, please note the [released binary changes](https://github.com/crypto-com/ch
 
 ### Step 2. Configure Tendermint
 
-- After placing all binaries on the path. You can initialize Tendermint with `tendermint init`.
+- After placing all binaries on the path. You can initialize Tendermint with:
+  ```bash
+  $ ./tendermint init
+  ```
 
 ::: tip NOTE
 Depending your Tendermint home setting, the Tendermint configuration will be initialized to that home directory. To simply the following steps, we will use the default Tendermint home directory `~/.tendermint/` for illustration.
@@ -136,6 +148,10 @@ Depending your Tendermint home setting, the Tendermint configuration will be ini
 
   ```bash
   $ sed -i '/create_empty_blocks_interval = /c\create_empty_blocks_interval = "60s"' ~/.tendermint/config/config.toml
+  ```
+
+  ```bash
+  $ sed -i '/index_all_tags = /c\index_all_tags = true' ~/.tendermint/config/config.toml
   ```
 
 ::: tip NOTE
