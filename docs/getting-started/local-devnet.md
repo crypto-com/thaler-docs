@@ -121,10 +121,6 @@ Starting from July 2020, Azure DCsv2 (Confidential Cloud) instance have been upg
     $ ch chain
     $ make install-isgx-driver
     ```
-1. Create an symbolic link of `/dev/sgx` to `/dev/isgx`
-    ```bash
-    $ sudo ln -s /dev/isgx /dev/sgx
-    ```
 
 ## Build binary and Docker images
 

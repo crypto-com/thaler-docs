@@ -12,11 +12,11 @@ Crypto.com Chain uses a hybrid transaction accounting model with different trans
 ![](./assets/states.png)
 
 Specifically, the blockchain begins with this [genesis file](https://github.com/crypto-com/chain/blob/master/docker/config/devnet/tendermint/genesis.json), which you can [see that](https://github.com/crypto-com/chain/blob/master/docker/config/devnet/tendermint/genesis.json#L20-L22) some genesis funds have already been distributed to the address `0x2dfd...38ea8` at the beginning:
-``` json
-  "0x2dfde2178daa679508828242119dcf2114038ea8": [
-    "UnbondedFromGenesis",
-    "500000000000000000"
-  ],
+```json
+"0x2dfde2178daa679508828242119dcf2114038ea8": [
+  "UnbondedFromGenesis",
+  "500000000000000000"
+],
 ```
 
  In this documentation, we will
