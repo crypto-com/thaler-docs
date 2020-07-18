@@ -1,7 +1,7 @@
-# Send Your First Transaction
+# Devnet: Send Your First Transaction
 
 ::: warning Caution
-This page is a continuation of running a local chain node of [Getting Started](./) for development.
+This page is a continuation of [Devnet: Running Latest Development Node](./local-devnet) for development.
 
 For anyone interested more on wallet management, getting testing token from the faucet and sending transactions,
 please refer to [ClientCLI](../wallets/client-cli).
@@ -11,10 +11,18 @@ Crypto.com Chain uses a hybrid transaction accounting model with different trans
 
 ![](./assets/states.png)
 
-Specifically, the blockchain begins with this [genesis file](https://github.com/crypto-com/chain/blob/master/docker/config/devnet/tendermint/genesis.json), which you can [see that](https://github.com/crypto-com/chain/blob/master/docker/config/devnet/tendermint/genesis.json#L20-L22) funds have already been distributed to some addresses at the beginning. In this documentation, we will
+Specifically, the blockchain begins with this [genesis file](https://github.com/crypto-com/chain/blob/master/docker/config/devnet/tendermint/genesis.json), which you can [see that](https://github.com/crypto-com/chain/blob/master/docker/config/devnet/tendermint/genesis.json#L20-L22) some genesis funds have already been distributed to the address `0x2dfd...38ea8` at the beginning:
+``` json
+  "0x2dfde2178daa679508828242119dcf2114038ea8": [
+    "UnbondedFromGenesis",
+    "500000000000000000"
+  ],
+```
+
+ In this documentation, we will
 
 - Restore the wallet with the default [mnemonics](https://github.com/crypto-com/chain/blob/master/docker/config/devnet/tendermint/mnemonics.txt#L1);
-- Obtain the allocated funds and perform transactions.
+- Gain access to the allocated funds in the *staking address* `0x2dfd...38ea8` and perform transactions.
 
 ### Pre-requisites:
 
