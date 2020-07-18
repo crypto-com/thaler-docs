@@ -269,4 +269,4 @@ If you need to stop the processes and initialize a new chain
 
 ### Congratulations
 
-Congratulations, now the environment to run Crypto.com Chain is all set. Let's on on and start [sending your first transaction](./send_your_first_transaction).
+Congratulations, now the environment to run Crypto.com Chain is all set. Let's on on and start [sending your first transaction](./send-your-first-transaction).
