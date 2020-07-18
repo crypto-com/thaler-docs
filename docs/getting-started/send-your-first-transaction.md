@@ -87,11 +87,27 @@ Once we have a restore wallet, we are now ready to create new addresses for perf
 - It is important to keep your wallet sync with the blockchain. This can be easily done by the `sync` command:
 
   ```bash
-  $ ./target/debug/client-cli sync --name Default --disable-fast-forward
+  $ ./target/debug/client-cli sync --name Default
   Enter authentication token:       # Input the Authentication token
   Synchronizing: 1951 / 1951 [=================================] 100.00 % 930.09/s
   Synchronization complete!
   ```
+
+::: tip Note: If you encounter a fingerprint mismatched error
+
+```bash
+$ ./target/debug/client-cli sync --name Default
+Enter authentication token:
+Error: Verify error: genesis-fingerprint from tendermint 13EBEC140C7DC6AE519DB91304C1F54C4781BEA02EDD2A90740B65D18D2E4C75 does not match preset genesis-fingerprint DC05002AAEAB58DA40701073A76A018C9AB02C87BD89ADCB6EE7FE5B419526C8
+```
+
+Make sure you have exported the fingerprint manually
+
+```bash
+$ export CRYPTO_GENESIS_FINGERPRINT=13EBEC140C7DC6AE519DB91304C1F54C4781BEA02EDD2A90740B65D18D2E4C75
+```
+
+:::
 
 #### Check the genesis funds
 
@@ -118,22 +134,6 @@ Once we have a restore wallet, we are now ready to create new addresses for perf
   ```
 
   As in the above example, you can see that there are `5000000000 CRO` test tokens in the _staking_ address that is `Unbonded` and ready to go.
-
-::: tip Note: If you encounter a fingerprint mismatched error
-
-```bash
-$ ./target/debug/client-cli sync --name Default --disable-fast-forward
-Enter authentication token:
-Error: Verify error: genesis-fingerprint from tendermint 8DC8F782F15A6481E4485D146A1ED2E005A7A6BE183BE06204EA0F0C55671F02 does not match preset genesis-fingerprint DC05002AAEAB58DA40701073A76A018C9AB02C87BD89ADCB6EE7FE5B419526C8
-```
-
-Make sure you have exported the fingerprint manually
-
-```bash
-$ export CRYPTO_GENESIS_FINGERPRINT=8DC8F782F15A6481E4485D146A1ED2E005A7A6BE183BE06204EA0F0C55671F02
-```
-
-:::
 
 ### Withdraw the genesis funds
 
@@ -182,7 +182,7 @@ Transaction successfully created
 - Then, you can `sync` and check `balance` of your wallet:
 
   ```bash
-  $ ./target/debug/client-cli sync --name Default --disable-fast-forward
+  $ ./target/debug/client-cli sync --name Default
   Enter authentication token:       # Input the Authentication token
   Synchronizing: 1951 / 1951 [=================================] 100.00 % 930.09/s
   Synchronization complete!
@@ -287,7 +287,7 @@ Remember to include Bob's `view-key` here.
 - Lastly, you can `sync` and check `balance` of Bob's wallet:
 
 ```bash
-$ ./target/debug/client-cli sync --name Bob --disable-fast-forward
+$ ./target/debug/client-cli sync --name Bob
 Enter authentication token:       # Input the Authentication token
 Synchronizing: 5121 / 5121 [=================================] 100.00 % 1606.16/s
 Synchronization complete!

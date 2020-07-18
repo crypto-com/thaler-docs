@@ -65,11 +65,14 @@ To access your remote Azure VM later, you will first need to create an SSH key i
 
 ![](./assets/azure_setup_2.png)
 
+4. Click "Create" to create the VM
+
 ## VM environment setup
 
 1. Go to your newly-created Azure VM details page and copy your newly-created Azure VM `Public IP Address`. Then SSH to your the machine and set up the environment for Crypto.com Chain.
     ```bash
-    $ ssh ubuntu@{Azure VM Public IP Address}
+    $ ssh {Azure VM Username}@{Azure VM Public IP Address}
+    ## Example: ssh crypto@127.0.0.1
     ```
 
 1. Install `Docker`: you can refer to the following document on ["How To Install and Use Docker on Ubuntu 18.04"
@@ -99,7 +102,7 @@ To access your remote Azure VM later, you will first need to create an SSH key i
 Starting from July 2020, Azure DCsv2 (Confidential Cloud) instance have been upgraded to use DCAP driver higher than v1.32 which is not compatible with our chain. In this step we will re-install the SGX driver with a compatible one.
 :::
 
-1. Remove existing DCAP driver
+1. Remove existing DCAP driver. This will take 5 minutes
     ```bash
     $ cd chain
     $ make rm-dcap-sgx-driver
@@ -108,13 +111,19 @@ Starting from July 2020, Azure DCsv2 (Confidential Cloud) instance have been upg
     ```bash
     $ sudo reboot
     ```
-1. Your Azure VM will now restart and you will be kicked from the SSH session. Wait for 10 minutes and SSH to your VM again.
+1. Your Azure VM will now restart and you will be kicked from the SSH session. Wait for 10 minutes and SSH to your VM again
     ```bash
-    $ ssh ubuntu@{Azure VM Public IP Address}
+    $ ssh {Azure VM Username}@{Azure VM Public IP Address}
+    ## Example: ssh crypto@127.0.0.1
     ```
-1. Install the compatible SGX drive
+1. Install the compatible SGX driver.
     ```bash
+    $ ch chain
     $ make install-isgx-driver
+    ```
+1. Create an symbolic link of `/dev/sgx` to `/dev/isgx`
+    ```bash
+    $ sudo ln -s /dev/isgx /dev/sgx
     ```
 
 ## Build binary and Docker images
@@ -197,11 +206,11 @@ to sign up for the ID and KEY. It won't take you more than 5 minutes.
 1. Run all the components of Cryto.com Chain with following command:
 
     ```bash
-    $ make run TX_QUERY_HOSTNAME={YOUR_INSTANCE_HOSTNAME}
+    $ make run TX_QUERY_HOSTNAME={YOUR_VM_HOSTNAME}
     ```
 
-    Depending on where you will run your wallet in the next step, `{YOUR_INSTANCE_HOSTNAME}` will have different values:
-    | Wallet Location | `{YOUR_INSTANCE_HOSTNAME}` |
+    Depending on where you will run your wallet in the next step, `{YOUR_VM_HOSTNAME}` will have different values:
+    | Wallet Location | `{YOUR_VM_HOSTNAME}` |
     | --- | --- |
     | In the same Azure machine | `127.0.0.1` |
     | Remote (e.g. from your computer) | Azure VM IP address |
@@ -252,7 +261,7 @@ If you need to stop the processes and initialize a new chain
     $ make rm-all
     ```
 
-2. clean all the storage used by Tendermint, Cryto.com Chain by:
+2. clean all the storage used by Tendermint, Crypto.com Chain by:
 
     ```bash
     $ make clean-data
@@ -264,7 +273,7 @@ If you need to stop the processes and initialize a new chain
     $ sudo make create-path
     $ sudo make chown-path user=$(id -u) group=$(id -g)
     $ make prepare
-    $ make run
+    $ make run TX_QUERY_HOSTNAME={YOUR_VM_HOSTNAME}
     ```
 
 ### Congratulations
