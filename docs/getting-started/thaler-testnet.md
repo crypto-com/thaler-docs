@@ -13,7 +13,7 @@ for [payment data confidentiality](../protocol/transaction-privacy.md#motivation
 chains' setup. A special type of hardware is needed and the reference of [SGX-hardware](https://github.com/ayeks/SGX-hardware)
 could help you identify if your current hardware supports `Intel® SGX` or not.
 
-If your development machine does not support SGX, we recommend spinning up a cloud instance listed in the [this reference](https://github.com/ayeks/SGX-hardware#cloud-vendors). In this guide, we will walk through the process of setting it up on [Azure Confidential Compute VM](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/microsoft-azure-compute.acc-virtual-machine-v2?tab=overview).
+If your development machine does not support SGX, we recommend spinning up a cloud instance listed in [this reference](https://github.com/ayeks/SGX-hardware#cloud-vendors). In this guide, we will walk through the process of setting it up on [Azure Confidential Compute VM](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/microsoft-azure-compute.acc-virtual-machine-v2?tab=overview).
 
 #### Supported OS
 
@@ -73,9 +73,11 @@ $ sudo apt install libsgx-uae-service
 If you encountered the error `Unable to locate package` during Intel SGX PSW installation, make sure the command you copy is the same as the PDF content.
 
 In particular, when you install the pre-requisites, hyphens (`-`) may be missing in the copied command, i.e. the correct command is:
+
 ```bash
 $ sudo apt-get install libssl-dev libcurl4-openssl-dev libprotobuf-dev
 ```
+
 :::
 
 ### Step 1-2. Install ZeroMQ
@@ -83,13 +85,13 @@ $ sudo apt-get install libssl-dev libcurl4-openssl-dev libprotobuf-dev
 You may also need to install libzmq (e.g. [libzmq3-dev](https://packages.ubuntu.com/xenial/libzmq3-dev) package in Ubuntu 18.04).
 
 ```bash
-$ sudo apt install libzmq3-dev 
+$ sudo apt install libzmq3-dev
 ```
 
 ### Step 2. Get Tendermint and Chain v0.5.3 released binaries
 
 Download the latest version of [Tendermint 0.33.\*](https://github.com/tendermint/tendermint/releases).
-Chain v0.5.* can be [downloaded from GitHub](https://github.com/crypto-com/chain/releases).
+Chain v0.5.\* can be [downloaded from GitHub](https://github.com/crypto-com/chain/releases).
 
 ::: warning CAUTION
 Crypto.com Chain v0.5 is not backwards compatible with v0.3 nor v0.4 released earlier. So, if you were running a node with the old
@@ -99,15 +101,17 @@ Also, please note the [released binary changes](https://github.com/crypto-com/ch
 :::
 
 - To install Tendermint v0.33.6 on Linux based machine:
+
   ```bash
   $ sudo apt update
   $ sudo apt install -y unzip
   $ curl -LOJ https://github.com/tendermint/tendermint/releases/download/v0.33.6/tendermint_v0.33.6_linux_amd64.zip
   $ unzip tendermint_v0.33.6_linux_amd64.zip
   ```
-  Note: Replace `https://github.com/tendermint/tendermint/releases/download/v0.33.6/tendermint_v0.33.6_linux_amd64.zip` to your desired version GitHub release link. Make sure you are downloading 0.33.* but not the other versions.
 
-- To install Chain released binaries:
+  Note: Replace `https://github.com/tendermint/tendermint/releases/download/v0.33.6/tendermint_v0.33.6_linux_amd64.zip` to your desired version GitHub release link. Make sure you are downloading 0.33.\* but not the other versions.
+
+- To install Chain released binaries (v0.5.3):
   ```bash
   $ curl -LOJ https://github.com/crypto-com/chain/releases/download/v0.5.3/crypto-com-chain-release-0.5.3.tar.gz
   $ tar -zxvf crypto-com-chain-release-0.5.3.tar.gz
@@ -131,12 +135,13 @@ Depending your Tendermint home setting, the Tendermint configuration will be ini
   ```
 
 - verify MD5 checksum of the downloaded `genesis.json`. You should see `OK!` if the MD5 checksum matches.
+
   ```bash
   $ [ $(md5sum genesis.json | awk '{print $1}') = "1c518490f523153f5a644d47deb1a3c1" ] && echo "OK!" || echo "MISMATCHED"
   OK!
   ```
 
-- For network configuration, in `~/.tendermint/config/config.toml`, you can put the following as `seeds` and `create_empty_blocks_interval`:
+- For network configuration, in `~/.tendermint/config/config.toml`, you can modify the configurations of `seeds`, `create_empty_blocks_interval` and `index_all_tags` by:
 
   ```bash
   $ sed -i '/seeds = /c\seeds = "f3806de90c43f5474c6de2b5edefb81b9011f51f@52.186.66.214:26656,29fab3b66ee6d9a46a4ad0cc1b061fbf02024354@13.71.189.105:26656,2ab2acc873250dccc3eb5f6eb5bd003fe5e0caa7@51.145.98.33:26656"' ~/.tendermint/config/config.toml
@@ -184,9 +189,9 @@ restrict the incoming connections RPC connections (e.g. over NGINX or equivalent
 
 ### Step 4-A-1. Obtain and set the service provider credentials for development
 
-On the [Intel's developer portal](https://api.portal.trustedservices.intel.com/EPID-attestation), you can sign up for an *Intel® Developer Zone* account; under *Development Access*, you can obtain credentials for the non-production *DEV Intel® Software Guard Extensions Attestation Service*  and choose _"unlinkable quotes"_.
+On the [Intel's developer portal](https://api.portal.trustedservices.intel.com/EPID-attestation), you can sign up for an _Intel® Developer Zone_ account; under _Development Access_, you can obtain credentials for the non-production _DEV Intel® Software Guard Extensions Attestation Service_ and choose _"unlinkable quotes"_.
 
-Once you obtained the credentials in the portal, you can check the "*Subscription details*" in your profile page, then set the following environment variables:
+Once you obtained the credentials in the portal, you can check the "_Subscription details_" in your profile page, then set the following environment variables:
 
 - `SPID`: Set it to the "Service Provider ID (SPID)" value from the portal;
 - `IAS_API_KEY`: Set it to the primary or secondary API key from the portal.
@@ -229,6 +234,7 @@ In the following example, we will use the client-cli command-line tool to perfor
 export CRYPTO_CHAIN_ID=testnet-thaler-crypto-com-chain-42
 export CRYPTO_CLIENT_TENDERMINT=<YOUR_FULL_NODE_WS_ADDRESS>
 ```
+
 ::: tip Note for environment variables setting:
 If you would like to connect to a local full node, you can put `<YOUR_FULL_NODE_WS_ADDRESS>=ws://localhost:26657/websocket`, or alternatively, you may use the external full node by setting
 `<YOUR_FULL_NODE_WS_ADDRESS>=ws://13.90.34.32:26657/websocket`.
@@ -248,7 +254,7 @@ You can then create a staking address with:
 $ ./client-cli address new --name <WALLET_NAME> --type Staking
 ```
 
-If the created address matches one of the ones listed in the initial _genesis.json_ distribution, you can skip to [Step 3-b-3](#step-3-b-3-create-a-validator-key-pair).
+If the created address matches one of the ones listed in the initial _genesis.json_ distribution, you can skip to [Step 4-B-2](#step-4-b-2-create-a-new-wallet-with-staking-address).
 
 ### Step 4-B-2. Create a new wallet with staking address
 
@@ -269,6 +275,18 @@ You should obtain a hexadecimal-encoded address, e.g. `0xa861a0869c02ab8b74c7cb4
 
 Unless you have obtained the CRO testnet token before, simply send a message on [Gitter](https://gitter.im/crypto-com/community),
 stating who you are and your staking address (@devashishdxt or @lezzokafka would typically reply within a day).
+
+Afterwards, you can sync your wallet by:
+
+```bash
+$ ./client-cli sync --name <WALLET_NAME>
+```
+
+and check the state of your staking address:
+
+```bash
+$ ./client-cli state --name <WALLET_NAME> --address <STAKING_ADDRESS>
+```
 
 ### Step 4-B-4. Create a validator key pair
 
@@ -309,6 +327,8 @@ You will be required to insert the following:
 - the staking address that holds your bonded funds;
 - a moniker(name) for your validator node; and
 - a base64 encoded tendermint [validator public key](#step-3-b-3-create-a-validator-key-pair).
+
+Once the node-join transaction was successfully broadcasted, you should be able to see your Council node one the [testnet explorer](https://chain.crypto.com/explorer/council-nodes).
 
 ## Thaler testnet block explorer and CRO faucet
 
