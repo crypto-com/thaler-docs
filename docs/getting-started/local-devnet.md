@@ -24,7 +24,7 @@ If your development machine does not support SGX, we recommend spinning up a clo
 
 #### Supported OS
 
-We officially support Linux only. Other platforms may work buy there is no guarantee. We will extend our support to other platforms after we have stablized our current architecture.
+We officially support Linux only. Other platforms may work but there is no guarantee. We will extend our support to other platforms after we have stablized our current architecture.
 
 ## Overview
 
