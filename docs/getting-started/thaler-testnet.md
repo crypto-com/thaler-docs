@@ -348,7 +348,7 @@ You will be required to insert the following:
 
 Once the node-join transaction was successfully broadcasted, you should be able to see your Council node one the [testnet explorer](https://chain.crypto.com/explorer/council-nodes).
 
-To further check if the council node is signing blocks, kindly run this [scrip](https://github.com/crypto-com/chain-docs/tree/master/docs/getting-started/assets/signature_checking/check-validator-up.sh) with the flag ` --pubkey ` to specify the public key of your validator. For example:
+To further check if the council node is signing blocks, kindly run this [script](https://github.com/crypto-com/chain-docs/tree/master/docs/getting-started/assets/signature_checking/check-validator-up.sh) with the flag ` --pubkey ` to specify the public key of your validator. For example:
 
 ```bash
 $ ./check-validator-up.sh --tendermint-url http://13.90.34.32:26657 --pubkey "<YOUR_VALIDATOR_PUBLICKEY>"
