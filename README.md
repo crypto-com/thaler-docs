@@ -112,3 +112,4 @@ a PDF version of the site will be generated under the ``/docs`` path.
 4. Run `./deploy.sh`
 
 You should see your updates on [http://yourusermame.github.io/chain-docs](http://yourusermame.github.io/chain-docs).
+Fork to create my rephoto and then clone
