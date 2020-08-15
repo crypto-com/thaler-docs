@@ -100,16 +100,16 @@ version of Crypto.com Chain, you will have to delete all the associated data.
 Also, please note the [released binary changes](https://github.com/crypto-com/chain/releases/tag/v0.5.3).
 :::
 
-- To install Tendermint v0.33.6 on Linux based machine:
+- To install Tendermint v0.33.8 on Linux based machine:
 
   ```bash
   $ sudo apt update
   $ sudo apt install -y unzip
-  $ curl -LOJ https://github.com/tendermint/tendermint/releases/download/v0.33.6/tendermint_v0.33.6_linux_amd64.zip
-  $ unzip tendermint_v0.33.6_linux_amd64.zip
+  $ curl -LOJ https://github.com/tendermint/tendermint/releases/download/v0.33.8/tendermint_v0.33.8_linux_amd64.zip
+  $ unzip tendermint_v0.33.8_linux_amd64.zip
   ```
 
-  Note: Replace `https://github.com/tendermint/tendermint/releases/download/v0.33.6/tendermint_v0.33.6_linux_amd64.zip` to your desired version GitHub release link. Make sure you are downloading 0.33.\* but not the other versions.
+  Note: Replace `https://github.com/tendermint/tendermint/releases/download/v0.33.8/tendermint_v0.33.8_linux_amd64.zip` to your desired version GitHub release link. Make sure you are downloading 0.33.\* but not the other versions.
 
 - To install Chain released binaries (v0.5.3):
   ```bash
@@ -203,17 +203,112 @@ Once you obtained the credentials in the portal, you can check the "_Subscriptio
   ```bash
   $ RUST_LOG=info ./tx-query-app 0.0.0.0:3322 ipc://$HOME/enclave.socket
   ```
+  OR
+  
+- Start the tx-query enclave app use systemd (replace {YOUR_USER}, {YOUR_WorkingDirectory} where necessary)
+
+  ```bash
+  sudo cat <<EOF >> /etc/systemd/system/tx-query.service
+  [Unit]
+  Description=Crypto.com tx-query
+  After=network.target
+
+  [Service]
+  Type=simple
+  Restart=always
+  RestartSec=1
+  User={YOUR_USER}
+  LimitNOFILE=65536
+  Environment="RUST_LOG=info"
+  Environment="CRYPTO_CHAIN_ID=testnet-thaler-crypto-com-chain-42"
+  Environment="CRYPTO_CLIENT_TENDERMINT=ws://13.90.34.32:26657/websocket"
+  WorkingDirectory=/{YOUR_WorkingDirectory}/tx-query-HW-debug
+  ExecStart=/{YOUR_WorkingDirectory}/tx-query-HW-debug/tx-query-app 0.0.0.0:3322 ipc://$HOME/enclave.socket
+
+  [Install]
+  WantedBy=multi-user.target
+  EOF
+
+  sudo systemctl enable tx-query; \
+  sudo systemctl start tx-query; \
+  sudo journalctl -u tx-query -f
+  ```
 
 - Start chain-abci, e.g.:
 
   ```bash
   $ RUST_LOG=info ./chain-abci --chain_id testnet-thaler-crypto-com-chain-42 --genesis_app_hash F62DDB49D7EB8ED0883C735A0FB7DE7F2A3FA322FCD2AA832F452A62B38607D5 --enclave_server ipc://$HOME/enclave.socket --tx_query <EXTERNAL_IP/HOSTNAME>:3322
   ```
+OR
+
+- Start chain-abci use systemd (replace {YOUR_USER}, {YOUR_WorkingDirectory} where necessary):
+
+  ```bash
+  sudo cat <<EOF >> /etc/systemd/system/chain-abci.service
+
+  [Unit]
+  Description=Crypto.com chain-abci
+  After=network.target
+
+  [Service]
+  Type=simple
+  Restart=always
+  RestartSec=1
+  User={YOUR_USER}
+  LimitNOFILE=65536
+  Environment="RUST_LOG=info"
+  Environment="CRYPTO_CHAIN_ID=testnet-thaler-crypto-com-chain-42"
+  Environment="CRYPTO_CLIENT_TENDERMINT=ws://13.90.34.32:26657/websocket"
+  WorkingDirectory=/{YOUR_WorkingDirectory}/chain-abci-HW-debug
+  ExecStart=/{YOUR_WorkingDirectory}/chain-abci-HW-debug/chain-abci \
+          --chain_id testnet-thaler-crypto-com-chain-42 \
+          --genesis_app_hash F62DDB49D7EB8ED0883C735A0FB7DE7F2A3FA322FCD2AA832F452A62B38607D5 \
+          --enclave_server ipc://$HOME/enclave.socket \
+          --tx_query 127.0.0.1:3322
+        
+  [Install]
+  WantedBy=multi-user.target
+  EOF
+
+  sudo systemctl enable chain-abci; \
+  sudo systemctl start chain-abci; \
+  sudo journalctl -u chain-abci -f
+  ```
 
 - Finally, start Tendermint:
 
   ```bash
   $ ./tendermint node
+  ```
+OR
+
+- Start Tendermint use systemd (replace {YOUR_USER}, {YOUR_WorkingDirectory} where necessary):
+
+  ```bash
+  cat <<EOF >> /etc/systemd/system/crypto_tendermint.service
+
+  [Unit]
+  Description=Crypto_com tendermint
+  After=network.target
+
+  [Service]
+  Type=simple
+  Restart=always
+  RestartSec=1
+  User={YOUR_USER}
+  LimitNOFILE=65536
+  Environment="CRYPTO_CHAIN_ID=testnet-thaler-crypto-com-chain-42"
+  Environment="CRYPTO_CLIENT_TENDERMINT=ws://13.90.34.32:26657/websocket"
+  WorkingDirectory=/{YOUR_WorkingDirectory}
+  ExecStart=/{YOUR_WorkingDirectory}/tendermint node
+
+  [Install]
+  WantedBy=multi-user.target
+  EOF
+  
+  sudo systemctl enable crypto_tendermint; \
+  sudo systemctl start crypto_tendermint; \
+  sudo journalctl -u crypto_tendermint -f
   ```
 
 ::: tip Note:
@@ -300,7 +395,7 @@ $ ./client-cli state --name <WALLET_NAME> --address <STAKING_ADDRESS>
 
 ### Step 4-B-4. Create a validator key pair
 
-- In a development mode, the full key pair is located in the `~/.tendertmint/config/priv_validator_key.json` ;
+- In a development mode, the full key pair is located in the `~/.tendermint/config/priv_validator_key.json` ;
 
 - If the file does not exist, you can initialize the tendermint root directory by running `tendermint init`.
   The public key should be base64-encoded, e.g. `R9/ktG1UifLZ6nMHNA/UZUaDiLAPWt+m9I4aujcAz44=`.
