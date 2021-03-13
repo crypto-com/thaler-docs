@@ -5,10 +5,6 @@ on:
     branches: [ master ]
   push:
     branches: [ master ]
-    paths:
-    - 'docs/**'
-    - 'ci/**'
-    - '!README.md'
 jobs:
   scan:
     name: Scan
